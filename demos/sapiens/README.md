@@ -2,7 +2,7 @@
 
 This demo shows a best-practice NotebookLM workflow for turning a book notebook into reusable artifacts: slide deck, study guide/report, mind map, infographic, data table, quiz, flashcards, audio overview, and video overview.
 
-> Copyright note: this repo does not include the book PDF, raw NotebookLM outputs, or verbatim copyrighted excerpts. The screenshots below are lightweight illustrative mockups that show target structure and artifact quality expectations. Reproduce the workflow with your own legally available source copy inside NotebookLM.
+> Copyright note: this repo does not include the book PDF or verbatim copyrighted excerpts. It includes prompt logs, preview images, and compressed viewing copies of generated NotebookLM artifacts; use the Drive links for original full-quality files. Reproduce the workflow with your own legally available source copy inside NotebookLM.
 
 ## Target outcome
 
@@ -19,14 +19,17 @@ This demo shows a best-practice NotebookLM workflow for turning a book notebook 
 
 ## Real artifacts from the Drive delivery
 
-The real NotebookLM outputs that were already uploaded to Google Drive are indexed in [`drive_outputs/README.md`](drive_outputs/README.md). To keep git history lightweight, only small repo-friendly files are committed here; large PPTX/PDF/MP4 files stay on Drive.
+The real NotebookLM outputs that were already uploaded to Google Drive are indexed in [`drive_outputs/README.md`](drive_outputs/README.md). This repo also includes compressed viewing copies under [`compressed_outputs/`](compressed_outputs/) so the main PPT/PDF/video results can be reviewed without opening Drive.
 
 Included locally:
 
 - [`drive_outputs/sapiens_infographic_final.png`](drive_outputs/sapiens_infographic_final.png) — final Studio-native infographic preview.
 - [`drive_outputs/prompts_drive_01.md`](drive_outputs/prompts_drive_01.md) and [`drive_outputs/prompts_drive_02.md`](drive_outputs/prompts_drive_02.md) — prompt logs from the artifact run.
+- [`compressed_outputs/sapiens_slide_deck_concise_compressed.pptx`](compressed_outputs/sapiens_slide_deck_concise_compressed.pptx) and [`compressed_outputs/sapiens_slide_deck_concise_compressed.pdf`](compressed_outputs/sapiens_slide_deck_concise_compressed.pdf) — compressed concise slide-deck viewing copies.
+- [`compressed_outputs/sapiens_slide_deck_detailed_compressed.pptx`](compressed_outputs/sapiens_slide_deck_detailed_compressed.pptx) and [`compressed_outputs/sapiens_slide_deck_detailed_compressed.pdf`](compressed_outputs/sapiens_slide_deck_detailed_compressed.pdf) — compressed detailed slide-deck viewing copies.
+- [`compressed_outputs/sapiens_video_part1_compressed.mp4`](compressed_outputs/sapiens_video_part1_compressed.mp4), [`compressed_outputs/sapiens_video_part2_compressed.mp4`](compressed_outputs/sapiens_video_part2_compressed.mp4), and [`compressed_outputs/sapiens_video_part3_compressed.mp4`](compressed_outputs/sapiens_video_part3_compressed.mp4) — downscaled video previews.
 
-Drive folder with the full artifact set:
+Drive folder with the original full-quality artifact set:
 
 - https://drive.google.com/drive/folders/1sZWcG6vdHnfLDLlt99UsWG56zAEHeMCo
 

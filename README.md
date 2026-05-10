@@ -23,7 +23,8 @@ See [`demos/sapiens/`](demos/sapiens/) for a complete best-practice example usin
 - a reproducible NotebookLM CLI workflow for creating a book notebook and generating Studio artifacts;
 - prompt files for slide deck, study guide/report, mind map, infographic, data table, quiz, flashcards, audio, and video;
 - real Drive-delivered prompt logs plus a final infographic PNG committed under `demos/sapiens/drive_outputs/`;
-- a Drive artifact manifest linking to the larger PPTX/PDF/MP4 outputs without bloating git history;
+- compressed PPTX/PDF/MP4 viewing copies committed under `demos/sapiens/compressed_outputs/`;
+- a Drive artifact manifest linking to the original full-quality PPTX/PDF/MP4 outputs;
 - lightweight SVG mock screenshots showing the desired artifact gallery, dense slide style, and Chinese infographic quality target;
 - a QA checklist for source grounding, Chinese visual text, PPTX validation, and long-running artifact handoff.
 
@@ -31,11 +32,12 @@ Preview:
 
 ![Sapiens final NotebookLM infographic](demos/sapiens/drive_outputs/sapiens_infographic_final.png)
 
-Full artifact index:
+Full artifact indexes:
 
-- [`demos/sapiens/drive_outputs/README.md`](demos/sapiens/drive_outputs/README.md)
+- [`demos/sapiens/drive_outputs/README.md`](demos/sapiens/drive_outputs/README.md) — original full-quality Drive artifacts and prompt logs.
+- [`demos/sapiens/compressed_outputs/README.md`](demos/sapiens/compressed_outputs/README.md) — compressed PPTX/PDF/MP4 viewing copies committed to git.
 
-> The demo does not commit the book PDF, private auth data, or large video/PPT binaries. Use your own legally available source inside NotebookLM.
+> The demo does not commit the book PDF, private auth data, or original full-quality video/PPT binaries. Use your own legally available source inside NotebookLM.
 
 ## Installing these skills into Hermes
 

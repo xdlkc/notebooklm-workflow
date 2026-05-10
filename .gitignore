@@ -29,3 +29,9 @@ artifacts/
 *.pdf
 *.mp3
 *.mp4
+
+# Curated demo artifacts intentionally committed as compressed viewing copies.
+!demos/sapiens/compressed_outputs/
+!demos/sapiens/compressed_outputs/*.pptx
+!demos/sapiens/compressed_outputs/*.pdf
+!demos/sapiens/compressed_outputs/*.mp4

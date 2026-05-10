@@ -1,6 +1,6 @@
 # Real NotebookLM artifacts for 《人类简史》
 
-This directory contains the small, repo-friendly artifacts copied from the Google Drive delivery folder. Large binaries stay on Drive to avoid bloating the repository.
+This directory contains the small, repo-friendly artifacts copied from the Google Drive delivery folder. Original full-quality large binaries stay on Drive; compressed viewing copies are committed separately under `../compressed_outputs/`.
 
 Drive folder:
 
@@ -14,6 +14,10 @@ Drive folder:
 | `sapiens_infographic_final.png` | https://drive.google.com/file/d/1g9Thni86T4HCjRk5zi0TIJRqefaWUOqk/view | Final Studio-native infographic PNG. |
 | `prompts_drive_01.md` | https://drive.google.com/file/d/17ZsgVNbtET5bwqesWnUE4PicZ2cLOAZ5/view | Prompt log uploaded with the artifacts. |
 | `prompts_drive_02.md` | https://drive.google.com/file/d/188uUjjjkjLOAVJ9GfmzFK0ypo7-6GuHb/view | Alternate/second prompt log uploaded with the artifacts. |
+
+## Compressed viewing copies included in git
+
+See [`../compressed_outputs/README.md`](../compressed_outputs/README.md) for compressed PPTX/PDF/MP4 copies derived from the Drive artifacts. These are intended for quick review in GitHub; use the Drive links below for original full-quality files.
 
 ## Large artifacts kept on Drive
 
@@ -29,11 +33,12 @@ Drive folder:
 | Video part 2 MP4 | 55.9 MB | https://drive.google.com/file/d/124tdD60smjx39muKOhvRuUcCVdaHSke6/view |
 | Video part 3 MP4 | 73.5 MB | https://drive.google.com/file/d/11OUD3hBi3Cmh0QPeRJuXhXeWSjjGrQOI/view |
 
-## Why not commit every binary?
+## Why not commit every original binary?
 
-The detailed PPTX/PDF and video files are useful for review but too large for normal git history. Keep them in Drive and commit only:
+The original detailed PPTX/PDF and video files are useful for full-quality review but too large for normal git history. Keep originals in Drive and commit only:
 
 - prompt logs;
 - small final preview images;
+- compressed viewing copies for quick GitHub review;
 - a manifest with stable Drive links;
 - QA notes and reproduction steps.
