@@ -16,6 +16,124 @@ This repository mirrors the reusable workflow skills used locally for NotebookLM
 - `skills/epub-2-pdf/` — convert EPUB ebooks to readable PDFs with Calibre/ebook-convert.
 - `skills/zlibrary-cli/` — use and troubleshoot the `heartleo/zlib` Z-Library CLI, including login/session handling, search/download commands, and a non-interactive download helper.
 
+## How the skills work together
+
+This repository is organized as a small workflow stack, not as one monolithic skill. Hermes/Codex loads the skill that matches the user request, and that skill then tells the agent which helper skills, CLIs, prompts, and safety checks to use.
+
+| Layer | Skill / directory | Role in the workflow |
+|---|---|---|
+| Source acquisition | `skills/zlibrary-cli/`, `skills/epub-2-pdf/`, `skills/upload-books-to-notebooklm/`, `skills/blog-2-notebooklm/` | Find or prepare authorized sources, convert EPUB/PDF when needed, and add local files or URLs into NotebookLM. |
+| Notebook operations | `skills/notebooklm/` | The core API/CLI wrapper: authenticate, create/list notebooks, add sources, wait for indexing, generate Studio artifacts, download outputs, and inspect artifact status. |
+| Book-to-PPT workflow | `skills/notebooklm/notebooklm-book-ppt-workflow/` | A source-grounded book-sharing workflow: extract structure, concepts, cases, timelines, quotes, takeaways, fact-check the script, then generate or build a deck. |
+| Studio artifact quality | `skills/notebooklm/notebooklm-studio-quality-prompts/` | Artifact-specific prompts for slide decks, reports, mind maps, infographics, tables, quizzes, flashcards, audio, and video so Studio outputs are not generic. |
+| Rich slide/deck QA | `skills/notebooklm/notebooklm-rich-slide-decks/` plus PowerPoint tooling | Guidance for dense, high-information slide decks, PPTX validation, visual QA, and compressed review copies. |
+| Delivery / showcase | `skills/notebooklm/notebooklm-artifacts-to-drive/` | Upload originals to Google Drive, create share links, keep large originals out of git, and commit repo-friendly previews/manifest files. |
+
+Typical routing examples:
+
+- “把这本书做成 NotebookLM 笔记本” -> `upload-books-to-notebooklm` + `notebooklm`.
+- “把 EPUB 先变 PDF 再上传” -> `epub-2-pdf` -> `upload-books-to-notebooklm` -> `notebooklm`.
+- “做一套读书分享 PPT” -> `notebooklm-book-ppt-workflow` -> `notebooklm` -> PowerPoint tooling -> `notebooklm-artifacts-to-drive`.
+- “生成所有 Studio 产物” -> `notebooklm-studio-quality-prompts` -> `notebooklm generate ...` -> `notebooklm-artifacts-to-drive`.
+- “把产物放进 workflow repo 做 demo” -> `notebooklm-artifacts-to-drive` repo-friendly artifact flow: manifest + compressed copies + README preview images.
+
+## How to run the workflow
+
+### 1. Install/update the skills
+
+Install this repository's `skills/` directory into Hermes, then start a fresh Hermes session so the skill index is reloaded. See [Installing these skills into Hermes](#installing-these-skills-into-hermes) below.
+
+### 2. Verify the runtime tools
+
+At minimum, a NotebookLM workflow usually needs:
+
+```bash
+export NOTEBOOKLM_HOME="$HOME/.notebooklm/profiles/default"
+notebooklm list --json
+gws auth status
+```
+
+Optional source-prep workflows may also need:
+
+```bash
+zlib profile                                   # only for authorized Z-Library use
+/Applications/calibre.app/Contents/MacOS/ebook-convert --version 2>/dev/null || ebook-convert --version
+```
+
+### 3. Give the agent a workflow-level request
+
+Use a prompt that names the goal, the source, the artifact types, and delivery expectations. Example:
+
+```text
+使用 notebooklm-workflow 的 skills，把这本书做成一个 NotebookLM 读书分享 workflow：
+1. 使用我提供的合法 PDF/EPUB 作为来源，不要加入书外知识；
+2. 创建或复用 NotebookLM notebook，等待 source ready；
+3. 生成：详细 PPT、学习指南、思维导图、信息图、数据表、quiz、flashcards、audio/video overview；
+4. 每类 artifact 使用对应的高质量 prompt，保存 prompt log 和 artifact IDs；
+5. 原始大文件上传到 Google Drive 的 NotebookLM/<notebook name>/；
+6. 如果要放进 repo，只提交 prompt logs、manifest、压缩预览版和 README 截图，不提交书籍 PDF、认证信息或大型原始二进制。
+```
+
+### 4. What the agent should do internally
+
+A complete run normally follows this sequence:
+
+```text
+Prepare source
+  -> optional: zlib search/download, EPUB->PDF conversion, PDF verification
+Create/reuse NotebookLM notebook
+  -> add source(s), wait until ready
+Plan prompts
+  -> artifact-specific prompts for PPT/report/map/infographic/table/quiz/flashcards/audio/video
+Generate artifacts
+  -> save generation JSON/logs and artifact IDs
+Download completed artifacts
+  -> PPTX/PDF/PNG/CSV/MD/JSON/MP4/MP3 as available
+QA and package
+  -> source-grounding check, PPTX archive check, visual/text checks, file-size check
+Deliver
+  -> original full-quality files to Drive; compressed copies/previews to repo when needed
+Document
+  -> README/demo manifest with links, prompts, screenshots, and reproduction notes
+```
+
+For book-sharing PPTs, `notebooklm-book-ppt-workflow` adds an audit trail before deck generation:
+
+```text
+00_source_check.md
+01_book_structure.md
+02_core_ideas.md
+03_key_cases.md
+04_timeline.md
+05_people.md
+06_concepts.md
+07_quotes.md
+08_misreadings.md
+09_reader_takeaways.md
+10_content_brief.md
+11_slide_outline.md
+12_slide_script.md
+13_fact_check.md
+14_slide_script_verified.md
+15_ppt_content_qa.md
+16_ppt_visual_qa.md
+```
+
+### 5. Output layout for reusable demos
+
+Use the 《人类简史》 demo as the reference shape:
+
+```text
+demos/<slug>/
+  README.md                         # workflow narrative, screenshots, QA checklist
+  prompts/                          # reusable artifact prompts
+  assets/                           # mockups and README preview images
+  drive_outputs/                    # prompt logs + manifest linking original Drive files
+  compressed_outputs/               # compressed PPTX/PDF/MP4 review copies
+```
+
+The repo should contain reproducible instructions and lightweight review artifacts. Original source books, private auth state, browser cookies, OAuth tokens, Z-Library sessions, and full-quality large binaries should stay outside git.
+
 ## Demo / Best-practice example
 
 See [`demos/sapiens/`](demos/sapiens/) for a complete best-practice example using a 《人类简史》 NotebookLM notebook as the target output shape. It includes:
