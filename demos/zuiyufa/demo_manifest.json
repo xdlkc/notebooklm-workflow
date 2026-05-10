@@ -1,0 +1,404 @@
+{
+  "demo": "zuiyufa",
+  "source_workdir": "/Users/lkc/Code/notebooklm-workflow/.work/crime-and-punishment",
+  "demo_dir": "/Users/lkc/Code/notebooklm-workflow/demos/zuiyufa",
+  "inventory": [
+    {
+      "path": "drive_outputs/crime_and_punishment_infographic_final_minimal.png",
+      "bytes": 4384588
+    },
+    {
+      "path": "drive_outputs/crime_and_punishment_slide_deck.pdf",
+      "bytes": 30178983
+    },
+    {
+      "path": "drive_outputs/crime_and_punishment_slide_deck.pptx",
+      "bytes": 38848073
+    },
+    {
+      "path": "drive_outputs/crime_and_punishment_video.mp4",
+      "bytes": 47312288
+    },
+    {
+      "path": "logs/artifacts_final_minimal_poll.err",
+      "bytes": 0
+    },
+    {
+      "path": "logs/artifacts_loop_latest.err",
+      "bytes": 0
+    },
+    {
+      "path": "logs/download2_infographic.log",
+      "bytes": 8
+    },
+    {
+      "path": "logs/download2_slide_pdf.log",
+      "bytes": 236
+    },
+    {
+      "path": "logs/download2_slide_pptx.log",
+      "bytes": 237
+    },
+    {
+      "path": "logs/download2_video.log",
+      "bytes": 219
+    },
+    {
+      "path": "logs/download_final_minimal_infographic.log",
+      "bytes": 63
+    },
+    {
+      "path": "logs/download_final_minimal_infographic_2.log",
+      "bytes": 63
+    },
+    {
+      "path": "logs/download_final_minimal_infographic_3.log",
+      "bytes": 247
+    },
+    {
+      "path": "logs/download_infographic.log",
+      "bytes": 129
+    },
+    {
+      "path": "logs/download_manual_infographic.log",
+      "bytes": 236
+    },
+    {
+      "path": "logs/download_manual_slide_pdf.log",
+      "bytes": 232
+    },
+    {
+      "path": "logs/download_manual_slide_pptx.log",
+      "bytes": 233
+    },
+    {
+      "path": "logs/download_retry_infographic.log",
+      "bytes": 242
+    },
+    {
+      "path": "logs/download_slide_pdf.log",
+      "bytes": 97
+    },
+    {
+      "path": "logs/download_slide_pptx.log",
+      "bytes": 97
+    },
+    {
+      "path": "logs/download_video.log",
+      "bytes": 87
+    },
+    {
+      "path": "logs/upload_checksums.json",
+      "bytes": 331
+    },
+    {
+      "path": "logs/upload_infographic.json",
+      "bytes": 368
+    },
+    {
+      "path": "logs/upload_manifest.json",
+      "bytes": 335
+    },
+    {
+      "path": "logs/upload_pdf.json",
+      "bytes": 360
+    },
+    {
+      "path": "logs/upload_validation_summary.json",
+      "bytes": 340
+    },
+    {
+      "path": "logs/upload_video.json",
+      "bytes": 349
+    },
+    {
+      "path": "metadata/artifact_ids.env",
+      "bytes": 140
+    },
+    {
+      "path": "metadata/artifacts_after_final_minimal.json",
+      "bytes": 1751
+    },
+    {
+      "path": "metadata/artifacts_after_final_minimal_2.json",
+      "bytes": 1751
+    },
+    {
+      "path": "metadata/artifacts_after_wait_infographic.json",
+      "bytes": 1150
+    },
+    {
+      "path": "metadata/artifacts_after_wait_slide-deck.json",
+      "bytes": 1150
+    },
+    {
+      "path": "metadata/artifacts_after_wait_video.json",
+      "bytes": 1150
+    },
+    {
+      "path": "metadata/artifacts_before_generate.json",
+      "bytes": 101
+    },
+    {
+      "path": "metadata/artifacts_final.json",
+      "bytes": 101
+    },
+    {
+      "path": "metadata/artifacts_final2.json",
+      "bytes": 1423
+    },
+    {
+      "path": "metadata/artifacts_final_minimal_poll.json",
+      "bytes": 1748
+    },
+    {
+      "path": "metadata/artifacts_loop_latest.json",
+      "bytes": 1423
+    },
+    {
+      "path": "metadata/artifacts_manual_after_retry_info.json",
+      "bytes": 1421
+    },
+    {
+      "path": "metadata/artifacts_manual_latest.json",
+      "bytes": 1131
+    },
+    {
+      "path": "metadata/artifacts_now.json",
+      "bytes": 1426
+    },
+    {
+      "path": "metadata/artifacts_poll_1.json",
+      "bytes": 1147
+    },
+    {
+      "path": "metadata/artifacts_poll_2.json",
+      "bytes": 1150
+    },
+    {
+      "path": "metadata/artifacts_poll_3.json",
+      "bytes": 56
+    },
+    {
+      "path": "metadata/artifacts_poll_4.json",
+      "bytes": 1150
+    },
+    {
+      "path": "metadata/artifacts_poll_5.json",
+      "bytes": 1150
+    },
+    {
+      "path": "metadata/checksums.sha256",
+      "bytes": 925
+    },
+    {
+      "path": "metadata/drive_uploads.json",
+      "bytes": 6639
+    },
+    {
+      "path": "metadata/generate_infographic.json",
+      "bytes": 79
+    },
+    {
+      "path": "metadata/generate_infographic_final_minimal.json",
+      "bytes": 79
+    },
+    {
+      "path": "metadata/generate_infographic_retry.json",
+      "bytes": 79
+    },
+    {
+      "path": "metadata/generate_slide_deck.json",
+      "bytes": 79
+    },
+    {
+      "path": "metadata/generate_video.json",
+      "bytes": 79
+    },
+    {
+      "path": "metadata/manifest.json",
+      "bytes": 9938
+    },
+    {
+      "path": "metadata/notebook_create.json",
+      "bytes": 181
+    },
+    {
+      "path": "metadata/notebooks_before.json",
+      "bytes": 53632
+    },
+    {
+      "path": "metadata/source_add.json",
+      "bytes": 102
+    },
+    {
+      "path": "metadata/source_add_retry1.json",
+      "bytes": 174
+    },
+    {
+      "path": "metadata/sources_after_retry1.json",
+      "bytes": 469
+    },
+    {
+      "path": "metadata/sources_after_timeout.json",
+      "bytes": 182
+    },
+    {
+      "path": "metadata/sources_ready.json",
+      "bytes": 461
+    },
+    {
+      "path": "metadata/validation_summary.md",
+      "bytes": 2866
+    },
+    {
+      "path": "ppt_previews/image1.png",
+      "bytes": 1589542
+    },
+    {
+      "path": "ppt_previews/image10.png",
+      "bytes": 1319170
+    },
+    {
+      "path": "ppt_previews/image11.png",
+      "bytes": 2114648
+    },
+    {
+      "path": "ppt_previews/image12.png",
+      "bytes": 2137391
+    },
+    {
+      "path": "ppt_previews/image13.png",
+      "bytes": 2009036
+    },
+    {
+      "path": "ppt_previews/image14.png",
+      "bytes": 2649177
+    },
+    {
+      "path": "ppt_previews/image15.png",
+      "bytes": 2388538
+    },
+    {
+      "path": "ppt_previews/image16.png",
+      "bytes": 1543116
+    },
+    {
+      "path": "ppt_previews/image17.png",
+      "bytes": 2225242
+    },
+    {
+      "path": "ppt_previews/image18.png",
+      "bytes": 2255527
+    },
+    {
+      "path": "ppt_previews/image19.png",
+      "bytes": 1639168
+    },
+    {
+      "path": "ppt_previews/image2.png",
+      "bytes": 2377827
+    },
+    {
+      "path": "ppt_previews/image20.png",
+      "bytes": 1654889
+    },
+    {
+      "path": "ppt_previews/image3.png",
+      "bytes": 816408
+    },
+    {
+      "path": "ppt_previews/image4.png",
+      "bytes": 2200130
+    },
+    {
+      "path": "ppt_previews/image5.png",
+      "bytes": 1894536
+    },
+    {
+      "path": "ppt_previews/image6.png",
+      "bytes": 1886903
+    },
+    {
+      "path": "ppt_previews/image7.png",
+      "bytes": 2171007
+    },
+    {
+      "path": "ppt_previews/image8.png",
+      "bytes": 1318707
+    },
+    {
+      "path": "ppt_previews/image9.png",
+      "bytes": 2605424
+    },
+    {
+      "path": "ppt_previews/ppt_contact_sheet.html",
+      "bytes": 3384
+    },
+    {
+      "path": "prompts/01_slide_deck.md",
+      "bytes": 2090
+    },
+    {
+      "path": "prompts/02_infographic.md",
+      "bytes": 1611
+    },
+    {
+      "path": "prompts/02_infographic_final_minimal.md",
+      "bytes": 1151
+    },
+    {
+      "path": "prompts/02_infographic_retry.md",
+      "bytes": 1208
+    },
+    {
+      "path": "prompts/03_video.md",
+      "bytes": 1613
+    },
+    {
+      "path": "review_outputs/crime_and_punishment_infographic_initial_failed.png",
+      "bytes": 4880588
+    },
+    {
+      "path": "review_outputs/crime_and_punishment_infographic_retry_failed.png",
+      "bytes": 4208235
+    }
+  ],
+  "drive_links": [
+    {
+      "name": "crime_and_punishment_slide_deck.pptx",
+      "size": "38848073",
+      "webViewLink": "https://docs.google.com/presentation/d/1ypMHoYtIem7WdvwdR_Gj8eZ8XqwTqwgg/edit?usp=drivesdk&ouid=105662936787260058432&rtpof=true&sd=true"
+    },
+    {
+      "name": "crime_and_punishment_slide_deck.pdf",
+      "size": "30178983",
+      "webViewLink": "https://drive.google.com/file/d/1KL08aQpcmzT4SEHAK0tYi1_wq4YT1iEQ/view?usp=drivesdk"
+    },
+    {
+      "name": "crime_and_punishment_infographic_final_minimal.png",
+      "size": "4384588",
+      "webViewLink": "https://drive.google.com/file/d/1KzAOjT2t-TiTfguBuQXvuLwm5sfRSEo1/view?usp=drivesdk"
+    },
+    {
+      "name": "crime_and_punishment_video.mp4",
+      "size": "47312288",
+      "webViewLink": "https://drive.google.com/file/d/1Wb-TGsvhgrGal-VhcpV-ioZ2xTYxeIyC/view?usp=drivesdk"
+    },
+    {
+      "name": "validation_summary.md",
+      "size": "2584",
+      "webViewLink": "https://drive.google.com/file/d/16W0_NJjf8e8qs-0ZR3KDq6v8BRD9kAHA/view?usp=drivesdk"
+    },
+    {
+      "name": "manifest.json",
+      "size": "2906",
+      "webViewLink": "https://drive.google.com/file/d/1rG9RMehiPkct03Gtva3WeVqjHJQKraDj/view?usp=drivesdk"
+    },
+    {
+      "name": "checksums.sha256",
+      "size": "703",
+      "webViewLink": "https://drive.google.com/file/d/1Bk8OCfmnzoACGYUdGU5w86I_8s6GglVG/view?usp=drivesdk"
+    }
+  ]
+}

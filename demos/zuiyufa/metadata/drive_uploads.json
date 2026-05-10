@@ -1,0 +1,191 @@
+{
+  "folder": {
+    "path": "NotebookLM/《罪与罚》NotebookLM Workflow 实测 Demo",
+    "id": "1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R",
+    "webViewLink": "https://drive.google.com/drive/folders/1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R"
+  },
+  "files": [
+    {
+      "local_path": "/Users/lkc/Code/notebooklm-workflow/.work/crime-and-punishment/downloads/crime_and_punishment_slide_deck.pptx",
+      "drive": {
+        "id": "1ypMHoYtIem7WdvwdR_Gj8eZ8XqwTqwgg",
+        "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "name": "crime_and_punishment_slide_deck.pptx",
+        "parents": [
+          "1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R"
+        ],
+        "permissions": [
+          {
+            "id": "anyoneWithLink",
+            "role": "reader",
+            "type": "anyone"
+          },
+          {
+            "id": "16782307120837607445",
+            "role": "owner",
+            "type": "user"
+          }
+        ],
+        "size": "38848073",
+        "webContentLink": "https://drive.google.com/uc?id=1ypMHoYtIem7WdvwdR_Gj8eZ8XqwTqwgg&export=download",
+        "webViewLink": "https://docs.google.com/presentation/d/1ypMHoYtIem7WdvwdR_Gj8eZ8XqwTqwgg/edit?usp=drivesdk&ouid=105662936787260058432&rtpof=true&sd=true"
+      }
+    },
+    {
+      "local_path": "/Users/lkc/Code/notebooklm-workflow/.work/crime-and-punishment/downloads/crime_and_punishment_slide_deck.pdf",
+      "drive": {
+        "id": "1KL08aQpcmzT4SEHAK0tYi1_wq4YT1iEQ",
+        "mimeType": "application/pdf",
+        "name": "crime_and_punishment_slide_deck.pdf",
+        "parents": [
+          "1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R"
+        ],
+        "permissions": [
+          {
+            "id": "anyoneWithLink",
+            "role": "reader",
+            "type": "anyone"
+          },
+          {
+            "id": "16782307120837607445",
+            "role": "owner",
+            "type": "user"
+          }
+        ],
+        "size": "30178983",
+        "webContentLink": "https://drive.google.com/uc?id=1KL08aQpcmzT4SEHAK0tYi1_wq4YT1iEQ&export=download",
+        "webViewLink": "https://drive.google.com/file/d/1KL08aQpcmzT4SEHAK0tYi1_wq4YT1iEQ/view?usp=drivesdk"
+      }
+    },
+    {
+      "local_path": "/Users/lkc/Code/notebooklm-workflow/.work/crime-and-punishment/downloads/crime_and_punishment_infographic_final_minimal.png",
+      "drive": {
+        "id": "1KzAOjT2t-TiTfguBuQXvuLwm5sfRSEo1",
+        "mimeType": "image/png",
+        "name": "crime_and_punishment_infographic_final_minimal.png",
+        "parents": [
+          "1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R"
+        ],
+        "permissions": [
+          {
+            "id": "anyoneWithLink",
+            "role": "reader",
+            "type": "anyone"
+          },
+          {
+            "id": "16782307120837607445",
+            "role": "owner",
+            "type": "user"
+          }
+        ],
+        "size": "4384588",
+        "webContentLink": "https://drive.google.com/uc?id=1KzAOjT2t-TiTfguBuQXvuLwm5sfRSEo1&export=download",
+        "webViewLink": "https://drive.google.com/file/d/1KzAOjT2t-TiTfguBuQXvuLwm5sfRSEo1/view?usp=drivesdk"
+      }
+    },
+    {
+      "local_path": "/Users/lkc/Code/notebooklm-workflow/.work/crime-and-punishment/downloads/crime_and_punishment_video.mp4",
+      "drive": {
+        "id": "1Wb-TGsvhgrGal-VhcpV-ioZ2xTYxeIyC",
+        "mimeType": "video/mp4",
+        "name": "crime_and_punishment_video.mp4",
+        "parents": [
+          "1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R"
+        ],
+        "permissions": [
+          {
+            "id": "anyoneWithLink",
+            "role": "reader",
+            "type": "anyone"
+          },
+          {
+            "id": "16782307120837607445",
+            "role": "owner",
+            "type": "user"
+          }
+        ],
+        "size": "47312288",
+        "webContentLink": "https://drive.google.com/uc?id=1Wb-TGsvhgrGal-VhcpV-ioZ2xTYxeIyC&export=download",
+        "webViewLink": "https://drive.google.com/file/d/1Wb-TGsvhgrGal-VhcpV-ioZ2xTYxeIyC/view?usp=drivesdk"
+      }
+    },
+    {
+      "local_path": "/Users/lkc/Code/notebooklm-workflow/.work/crime-and-punishment/validation_summary.md",
+      "drive": {
+        "id": "16W0_NJjf8e8qs-0ZR3KDq6v8BRD9kAHA",
+        "mimeType": "text/markdown",
+        "name": "validation_summary.md",
+        "parents": [
+          "1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R"
+        ],
+        "permissions": [
+          {
+            "id": "anyoneWithLink",
+            "role": "reader",
+            "type": "anyone"
+          },
+          {
+            "id": "16782307120837607445",
+            "role": "owner",
+            "type": "user"
+          }
+        ],
+        "size": "2584",
+        "webContentLink": "https://drive.google.com/uc?id=16W0_NJjf8e8qs-0ZR3KDq6v8BRD9kAHA&export=download",
+        "webViewLink": "https://drive.google.com/file/d/16W0_NJjf8e8qs-0ZR3KDq6v8BRD9kAHA/view?usp=drivesdk"
+      }
+    },
+    {
+      "local_path": "/Users/lkc/Code/notebooklm-workflow/.work/crime-and-punishment/manifest.json",
+      "drive": {
+        "id": "1rG9RMehiPkct03Gtva3WeVqjHJQKraDj",
+        "mimeType": "application/json",
+        "name": "manifest.json",
+        "parents": [
+          "1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R"
+        ],
+        "permissions": [
+          {
+            "id": "anyoneWithLink",
+            "role": "reader",
+            "type": "anyone"
+          },
+          {
+            "id": "16782307120837607445",
+            "role": "owner",
+            "type": "user"
+          }
+        ],
+        "size": "2906",
+        "webContentLink": "https://drive.google.com/uc?id=1rG9RMehiPkct03Gtva3WeVqjHJQKraDj&export=download",
+        "webViewLink": "https://drive.google.com/file/d/1rG9RMehiPkct03Gtva3WeVqjHJQKraDj/view?usp=drivesdk"
+      }
+    },
+    {
+      "local_path": "/Users/lkc/Code/notebooklm-workflow/.work/crime-and-punishment/checksums.sha256",
+      "drive": {
+        "id": "1Bk8OCfmnzoACGYUdGU5w86I_8s6GglVG",
+        "mimeType": "text/plain",
+        "name": "checksums.sha256",
+        "parents": [
+          "1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R"
+        ],
+        "permissions": [
+          {
+            "id": "anyoneWithLink",
+            "role": "reader",
+            "type": "anyone"
+          },
+          {
+            "id": "16782307120837607445",
+            "role": "owner",
+            "type": "user"
+          }
+        ],
+        "size": "703",
+        "webContentLink": "https://drive.google.com/uc?id=1Bk8OCfmnzoACGYUdGU5w86I_8s6GglVG&export=download",
+        "webViewLink": "https://drive.google.com/file/d/1Bk8OCfmnzoACGYUdGU5w86I_8s6GglVG/view?usp=drivesdk"
+      }
+    }
+  ]
+}

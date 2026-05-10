@@ -30,6 +30,9 @@ artifacts/
 *.mp3
 *.mp4
 
+# Do not commit raw book source files for public demos
+demos/zuiyufa/source/
+
 # Curated demo artifacts intentionally committed as compressed viewing copies.
 !demos/sapiens/compressed_outputs/
 !demos/sapiens/compressed_outputs/*.pptx
