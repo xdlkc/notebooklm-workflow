@@ -17,9 +17,24 @@ This demo shows a best-practice NotebookLM workflow for turning a book notebook 
 | Quiz + flashcards | Understanding-oriented questions, not rote memorization. | `prompts/06_quiz_flashcards.md` |
 | Audio + video | Source-grounded Chinese explainer/podcast with concrete examples and segment structure. | `prompts/07_audio_video.md` |
 
+## Real artifacts from the Drive delivery
+
+The real NotebookLM outputs that were already uploaded to Google Drive are indexed in [`drive_outputs/README.md`](drive_outputs/README.md). To keep git history lightweight, only small repo-friendly files are committed here; large PPTX/PDF/MP4 files stay on Drive.
+
+Included locally:
+
+- [`drive_outputs/sapiens_infographic_final.png`](drive_outputs/sapiens_infographic_final.png) — final Studio-native infographic preview.
+- [`drive_outputs/prompts_drive_01.md`](drive_outputs/prompts_drive_01.md) and [`drive_outputs/prompts_drive_02.md`](drive_outputs/prompts_drive_02.md) — prompt logs from the artifact run.
+
+Drive folder with the full artifact set:
+
+- https://drive.google.com/drive/folders/1sZWcG6vdHnfLDLlt99UsWG56zAEHeMCo
+
+![Final NotebookLM infographic](drive_outputs/sapiens_infographic_final.png)
+
 ## Demo screenshots / mock previews
 
-These SVGs are illustrative previews for README browsing and PR review. They intentionally avoid real NotebookLM private data and copyrighted book excerpts.
+These SVGs are illustrative structure previews for README browsing and PR review. They intentionally avoid private NotebookLM data and copyrighted book excerpts.
 
 ![Notebook overview mockup](assets/notebook-overview.svg)
 

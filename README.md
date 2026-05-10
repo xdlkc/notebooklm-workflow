@@ -22,14 +22,20 @@ See [`demos/sapiens/`](demos/sapiens/) for a complete best-practice example usin
 
 - a reproducible NotebookLM CLI workflow for creating a book notebook and generating Studio artifacts;
 - prompt files for slide deck, study guide/report, mind map, infographic, data table, quiz, flashcards, audio, and video;
+- real Drive-delivered prompt logs plus a final infographic PNG committed under `demos/sapiens/drive_outputs/`;
+- a Drive artifact manifest linking to the larger PPTX/PDF/MP4 outputs without bloating git history;
 - lightweight SVG mock screenshots showing the desired artifact gallery, dense slide style, and Chinese infographic quality target;
 - a QA checklist for source grounding, Chinese visual text, PPTX validation, and long-running artifact handoff.
 
 Preview:
 
-![Sapiens NotebookLM artifact gallery mockup](demos/sapiens/assets/artifacts-gallery.svg)
+![Sapiens final NotebookLM infographic](demos/sapiens/drive_outputs/sapiens_infographic_final.png)
 
-> The demo does not commit the book PDF, private NotebookLM outputs, or copyrighted excerpts. Use your own legally available source inside NotebookLM.
+Full artifact index:
+
+- [`demos/sapiens/drive_outputs/README.md`](demos/sapiens/drive_outputs/README.md)
+
+> The demo does not commit the book PDF, private auth data, or large video/PPT binaries. Use your own legally available source inside NotebookLM.
 
 ## Installing these skills into Hermes
 
