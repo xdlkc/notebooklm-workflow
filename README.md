@@ -16,6 +16,74 @@ This repository mirrors the reusable workflow skills used locally for NotebookLM
 - `skills/epub-2-pdf/` — convert EPUB ebooks to readable PDFs with Calibre/ebook-convert.
 - `skills/zlibrary-cli/` — use and troubleshoot the `heartleo/zlib` Z-Library CLI, including login/session handling, search/download commands, and a non-interactive download helper.
 
+## Installing these skills into Hermes
+
+Install the complete skill directories so supporting `references/`, `scripts/`, `templates/`, and `assets/` files are preserved. From a clone of this repository:
+
+```bash
+git clone https://github.com/xdlkc/notebooklm-workflow.git
+cd notebooklm-workflow
+mkdir -p "$HOME/.hermes/skills"
+rsync -a --delete \
+  --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+  "skills/" "$HOME/.hermes/skills/"
+```
+
+To install into a named Hermes profile, copy into that profile's skills directory instead of the default `~/.hermes/skills` path, for example:
+
+```bash
+PROFILE_SKILLS="$HOME/.hermes/profiles/notebooklm/skills"
+mkdir -p "$PROFILE_SKILLS"
+rsync -a --delete \
+  --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+  "skills/" "$PROFILE_SKILLS/"
+```
+
+Start a fresh Hermes session after installing or updating skills so the new skill index is loaded.
+
+## Syncing local skills and this repository
+
+Use `rsync --delete` so renames and removed files stay in sync. Review `git diff` before committing and do not sync auth stores, cookies, tokens, generated private artifacts, or cache files.
+
+Local default-profile skills path:
+
+```bash
+LOCAL_SKILLS="$HOME/.hermes/skills"
+REPO="$HOME/Code/notebooklm-workflow"
+```
+
+Local skills updated → update the repository copy:
+
+```bash
+rsync -a --delete \
+  --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+  "$LOCAL_SKILLS/notebooklm/" "$REPO/skills/notebooklm/"
+rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+  "$LOCAL_SKILLS/blog-2-notebooklm/" "$REPO/skills/blog-2-notebooklm/"
+rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+  "$LOCAL_SKILLS/upload-books-to-notebooklm/" "$REPO/skills/upload-books-to-notebooklm/"
+rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+  "$LOCAL_SKILLS/epub-2-pdf/" "$REPO/skills/epub-2-pdf/"
+rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+  "$LOCAL_SKILLS/zlibrary-cli/" "$REPO/skills/zlibrary-cli/"
+
+cd "$REPO"
+git diff --stat
+git diff -- README.md skills/
+```
+
+Remote/repository updated → update local Hermes skills:
+
+```bash
+cd "$REPO"
+git pull --ff-only
+rsync -a --delete \
+  --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+  "skills/" "$LOCAL_SKILLS/"
+```
+
+If you only want one skill, sync that skill directory instead of the whole `skills/` tree.
+
 ## Required tools
 
 These skills are meant to be used by Hermes/Codex-style agents, but several workflows also require local CLIs or apps. Install only the tools needed for the workflow you plan to run.
