@@ -26,7 +26,8 @@ If the standalone `notebooklm` skill is available, load it for CLI command detai
 3. Preview grouping before upload:
 
 ```bash
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/upload-books-to-notebooklm/scripts/upload_books_to_notebooklm.py" --input "<book-dir>" --json
+UPLOAD_BOOKS_SKILL_DIR=${UPLOAD_BOOKS_SKILL_DIR:-skills/upload-books-to-notebooklm}
+python3 "$UPLOAD_BOOKS_SKILL_DIR/scripts/upload_books_to_notebooklm.py" --input "<book-dir>" --json
 ```
 
 Check that:
@@ -39,7 +40,8 @@ Check that:
 4. Execute only after the plan matches the request:
 
 ```bash
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/upload-books-to-notebooklm/scripts/upload_books_to_notebooklm.py" --input "<book-dir>" --execute --wait-ready
+UPLOAD_BOOKS_SKILL_DIR=${UPLOAD_BOOKS_SKILL_DIR:-skills/upload-books-to-notebooklm}
+python3 "$UPLOAD_BOOKS_SKILL_DIR/scripts/upload_books_to_notebooklm.py" --input "<book-dir>" --execute --wait-ready
 ```
 
 The script creates new notebooks, uploads sequentially, uses explicit `-n <notebook_id>` source targets, and reports source statuses.

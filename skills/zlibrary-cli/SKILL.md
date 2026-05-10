@@ -103,11 +103,14 @@ could not open a new TTY: open /dev/tty: device not configured
 When the user is authorized to download the book and the normal command fails this way, use the bundled non-interactive Go helper instead. It reads `~/.config/zlib/session.json`, fetches the book detail page, and calls the same `github.com/heartleo/zlib` download API without opening `/dev/tty`:
 
 ```bash
+# Run from the notebooklm-workflow repo root, or set ZLIB_SKILL_DIR to the
+# installed skill directory before using this fallback.
+ZLIB_SKILL_DIR=${ZLIB_SKILL_DIR:-"$PWD/skills/zlibrary-cli"}
 mkdir -p "$HOME/Downloads/books"
 cd /tmp
 if [ ! -f go.mod ]; then go mod init zlib-noninteractive-download >/dev/null 2>&1; fi
 go get github.com/heartleo/zlib@latest >/dev/null
-go run /Users/lkc/.hermes/skills/zlibrary-cli/scripts/noninteractive_download.go BOOK_ID "$HOME/Downloads/books"
+go run "$ZLIB_SKILL_DIR/scripts/noninteractive_download.go" BOOK_ID "$HOME/Downloads/books"
 ```
 
 The helper prints the saved file path and byte count. Verify the file exists and has the expected extension/size before reporting completion. Do not print or inspect cookie values from the session file.
@@ -135,7 +138,3 @@ The helper prints the saved file path and byte count. Verify the file exists and
    ```
 6. If cookies look stale, run `zlib logout` then `zlib login`.
 7. Avoid printing or sharing `~/.config/zlib/session.json` values; they are bearer-like session secrets.
-
-## User-specific note
-
-This machine already had `heartleo/zlib` installed via Homebrew at `/usr/local/bin/zlib` and verified as `zlib version 0.0.2` during creation of this skill. Re-check with live commands instead of relying on this note if time has passed.

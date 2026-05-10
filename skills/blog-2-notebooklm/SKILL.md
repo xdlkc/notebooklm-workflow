@@ -18,7 +18,8 @@ Turn a site blog into one or more NotebookLM notebooks where each article URL is
 
 2. Discover URLs from the official sitemap when available. Use the helper script for standard sitemap parsing:
    ```bash
-   /Users/lkc/.hermes/skills/blog-2-notebooklm/scripts/collect_sitemap_urls.py \
+   BLOG_SKILL_DIR=${BLOG_SKILL_DIR:-skills/blog-2-notebooklm}
+   python3 "$BLOG_SKILL_DIR/scripts/collect_sitemap_urls.py" \
      https://example.com/sitemap.xml \
      --prefix /blog --exclude-landing \
      --out /tmp/blog_urls.json --md /tmp/blog_urls.md

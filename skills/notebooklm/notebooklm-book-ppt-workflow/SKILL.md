@@ -62,7 +62,7 @@ SUMMARY.md
 Confirm the notebook and source readiness before asking for content:
 
 ```bash
-export NOTEBOOKLM_HOME="/Users/lkc/.notebooklm/profiles/default"  # if default auth path fails
+export NOTEBOOKLM_HOME="$HOME/.notebooklm/profiles/default"  # optional: set to your authenticated NotebookLM profile root
 notebooklm use <full-notebook-uuid>
 notebooklm status
 notebooklm source list --json > "$OUT/source_list.json"

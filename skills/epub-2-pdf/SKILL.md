@@ -26,7 +26,8 @@ Convert EPUB files to readable PDFs with Calibre. Prefer `ebook-convert`; use th
 Use `scripts/build_ebook_convert_cmd.py` to generate a robust command instead of retyping fragile quoting:
 
 ```bash
-python3 /Users/lkc/.codex/skills/epub-2-pdf/scripts/build_ebook_convert_cmd.py \
+EPUB2PDF_SKILL_DIR=${EPUB2PDF_SKILL_DIR:-skills/epub-2-pdf}
+python3 "$EPUB2PDF_SKILL_DIR/scripts/build_ebook_convert_cmd.py" \
   input.epub output.pdf --toc concise
 ```
 

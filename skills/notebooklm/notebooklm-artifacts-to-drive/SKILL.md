@@ -17,7 +17,7 @@ NotebookLM/<notebook name>/<artifact file>
 - Prefer Google Drive links for NotebookLM artifacts, especially PPTX/audio/video or files larger than chat upload limits.
 - Upload the original artifact when possible; only upload compressed copies if the user explicitly wants a smaller file.
 - Do not print OAuth tokens, client secrets, cookies, or credential JSON.
-- Use `NOTEBOOKLM_HOME=/Users/lkc/.notebooklm/profiles/default/profiles/default` on this user's machine when NotebookLM CLI reports auth problems with the default home; the CLI appends `profiles/default`, and the current storage file is nested under `/Users/lkc/.notebooklm/profiles/default/profiles/default/profiles/default/storage_state.json`.
+- If NotebookLM CLI reports auth problems with the default home, set `NOTEBOOKLM_HOME` to the authenticated profile root for the current machine (commonly `$HOME/.notebooklm/profiles/default`) and verify with `notebooklm list --json`. Do not hard-code another user's home directory.
 - Use `gws` for Drive upload when available; verify `gws auth status` before upload.
 
 ## Workflow
@@ -27,7 +27,7 @@ NotebookLM/<notebook name>/<artifact file>
 If a NotebookLM notebook ID is known, get the exact title from `notebooklm list --json`:
 
 ```bash
-export NOTEBOOKLM_HOME='/Users/lkc/.notebooklm/profiles/default'
+export NOTEBOOKLM_HOME="$HOME/.notebooklm/profiles/default"  # optional: adjust to your authenticated profile root
 notebooklm list --json > /tmp/notebooklm_list.json
 python3 - <<'PY'
 import json

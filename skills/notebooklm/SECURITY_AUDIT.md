@@ -80,7 +80,7 @@ Every version bump requires a manual review gate. Do not run `hermes skills upda
 
 ```bash
 # 1. Fetch upstream and see what's new in src/
-cd ~/Desktop/notebooklm-py
+cd /path/to/notebooklm-py
 git fetch upstream
 git log --oneline HEAD..upstream/main -- src/
 

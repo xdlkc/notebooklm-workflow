@@ -67,11 +67,13 @@ gws auth status   # only needed for Google Drive artifact delivery
 For Hermes skills, validate individual skill folders with the local skill validator, for example:
 
 ```bash
-python3 /Users/lkc/.hermes/skills/skill-creator/scripts/quick_validate.py skills/notebooklm
+SKILL_VALIDATOR=${SKILL_VALIDATOR:-$HOME/.hermes/skills/skill-creator/scripts/quick_validate.py}
+python3 "$SKILL_VALIDATOR" skills/notebooklm
 ```
 
 If the validator environment lacks PyYAML, run with uv:
 
 ```bash
-uv run --with pyyaml python /Users/lkc/.hermes/skills/skill-creator/scripts/quick_validate.py skills/notebooklm
+SKILL_VALIDATOR=${SKILL_VALIDATOR:-$HOME/.hermes/skills/skill-creator/scripts/quick_validate.py}
+uv run --with pyyaml python "$SKILL_VALIDATOR" skills/notebooklm
 ```

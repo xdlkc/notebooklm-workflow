@@ -25,7 +25,7 @@ Use this path when the deck is too sparse, too short, or missing important sourc
 1. Load `notebooklm` before using NotebookLM CLI.
 2. Identify the target notebook and verify sources are ready:
    ```bash
-   export NOTEBOOKLM_HOME="/Users/lkc/.notebooklm/profiles/default"  # if default auth path fails
+   export NOTEBOOKLM_HOME="$HOME/.notebooklm/profiles/default"  # optional: set to your authenticated NotebookLM profile root
    notebooklm use <full-notebook-uuid>
    notebooklm status
    notebooklm source list --json

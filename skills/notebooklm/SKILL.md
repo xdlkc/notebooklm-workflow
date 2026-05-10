@@ -559,7 +559,7 @@ For a single current notebook, `notebooklm artifact list --json` is fine. For ma
 NOTEBOOKLM_HOME=/path/to/home notebooklm list --json > /tmp/notebooklm_list.json
 
 # 2) Audit slide-deck/PPT presence across every notebook
-/Users/lkc/.hermes/hermes-agent/venv/bin/python - <<'PY'
+python3 - <<'PY'
 import asyncio, json, time
 from pathlib import Path
 from notebooklm import NotebookLMClient
