@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760" role="img" aria-label="Artifact matrix">
+  <defs><linearGradient id="bg" x1="0" x2="1"><stop offset="0" stop-color="#fff7ed"/><stop offset="1" stop-color="#ecfeff"/></linearGradient><style>.title{font:800 34px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#111827}.sub{font:400 16px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#475569}.h{font:700 19px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#0f172a}.p{font:400 13px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#334155}.card{rx:22;stroke-width:2}.tag{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#fff}</style></defs>
+  <rect width="1440" height="760" fill="url(#bg)"/><text x="70" y="70" class="title">同一个 Notebook，为什么要生成一组产物？</text><text x="70" y="104" class="sub">NotebookLM Studio 的每种 artifact 对应不同的复用场景：演示、复习、传播、结构化检索与异步消费。</text>
+  <g transform="translate(70 150)">
+    <rect width="300" height="180" fill="#fef3c7" stroke="#f59e0b" class="card"/><text x="28" y="42" class="h">Slide Deck</text><text x="28" y="73" class="p">读书分享 / 课程讲解 / 会议汇报</text><text x="28" y="104" class="p">详细版保留案例、概念和推理链</text><rect x="28" y="132" width="88" height="26" rx="13" fill="#f59e0b"/><text x="44" y="150" class="tag">PPTX/PDF</text>
+  </g><g transform="translate(410 150)">
+    <rect width="300" height="180" fill="#dcfce7" stroke="#22c55e" class="card"/><text x="28" y="42" class="h">Study Guide</text><text x="28" y="73" class="p">深度复盘、问题清单、误读提醒</text><text x="28" y="104" class="p">适合文章、讲稿和课程笔记再加工</text><rect x="28" y="132" width="60" height="26" rx="13" fill="#22c55e"/><text x="45" y="150" class="tag">MD</text>
+  </g><g transform="translate(750 150)">
+    <rect width="300" height="180" fill="#e0f2fe" stroke="#0ea5e9" class="card"/><text x="28" y="42" class="h">Mind Map</text><text x="28" y="73" class="p">把章节、概念和关系变成全局图</text><text x="28" y="104" class="p">适合查漏补缺与二次创作选题</text><rect x="28" y="132" width="70" height="26" rx="13" fill="#0ea5e9"/><text x="45" y="150" class="tag">JSON</text>
+  </g><g transform="translate(1090 150)">
+    <rect width="280" height="180" fill="#fae8ff" stroke="#d946ef" class="card"/><text x="28" y="42" class="h">Infographic</text><text x="28" y="73" class="p">社交传播与 README 首屏吸引力</text><text x="28" y="104" class="p">要求中文短标签、无乱码、结构清楚</text><rect x="28" y="132" width="66" height="26" rx="13" fill="#d946ef"/><text x="45" y="150" class="tag">PNG</text>
+  </g><g transform="translate(70 390)">
+    <rect width="300" height="180" fill="#ede9fe" stroke="#8b5cf6" class="card"/><text x="28" y="42" class="h">Data Table</text><text x="28" y="73" class="p">概念 / 证据 / 案例 / 启发结构化</text><text x="28" y="104" class="p">适合搜索、表格整理和后续提示词</text><rect x="28" y="132" width="62" height="26" rx="13" fill="#8b5cf6"/><text x="44" y="150" class="tag">CSV</text>
+  </g><g transform="translate(410 390)">
+    <rect width="300" height="180" fill="#ffe4e6" stroke="#f43f5e" class="card"/><text x="28" y="42" class="h">Quiz / Flashcards</text><text x="28" y="73" class="p">检验理解，不只是记忆术语</text><text x="28" y="104" class="p">可做读书会互动和学习复习</text><rect x="28" y="132" width="92" height="26" rx="13" fill="#f43f5e"/><text x="45" y="150" class="tag">JSON/MD</text>
+  </g><g transform="translate(750 390)">
+    <rect width="300" height="180" fill="#ccfbf1" stroke="#14b8a6" class="card"/><text x="28" y="42" class="h">Audio / Video</text><text x="28" y="73" class="p">长任务、异步消费、播客/白板讲解</text><text x="28" y="104" class="p">需要记录 artifact ID，避免主会话阻塞</text><rect x="28" y="132" width="82" height="26" rx="13" fill="#14b8a6"/><text x="44" y="150" class="tag">MP3/MP4</text>
+  </g><g transform="translate(1090 390)">
+    <rect width="280" height="180" fill="#f1f5f9" stroke="#64748b" class="card"/><text x="28" y="42" class="h">Manifest</text><text x="28" y="73" class="p">把原始文件、压缩版、prompt logs 串起来</text><text x="28" y="104" class="p">让 demo 可复现、可审计、可分享</text><rect x="28" y="132" width="62" height="26" rx="13" fill="#64748b"/><text x="45" y="150" class="tag">MD</text>
+  </g>
+  <path d="M120 650 H1320" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round"/><circle cx="180" cy="650" r="11" fill="#f59e0b"/><circle cx="430" cy="650" r="11" fill="#22c55e"/><circle cx="680" cy="650" r="11" fill="#0ea5e9"/><circle cx="930" cy="650" r="11" fill="#d946ef"/><circle cx="1180" cy="650" r="11" fill="#64748b"/><text x="150" y="692" class="sub">每个产物都不是“多一份文件”，而是给同一份知识增加一种可用入口。</text>
+</svg>

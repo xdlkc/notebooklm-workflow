@@ -134,6 +134,15 @@ demos/<slug>/
 
 The repo should contain reproducible instructions and lightweight review artifacts. Original source books, private auth state, browser cookies, OAuth tokens, Z-Library sessions, and full-quality large binaries should stay outside git.
 
+## Article / visual explainer
+
+See [`docs/notebooklm-workflow-article.md`](docs/notebooklm-workflow-article.md) for a long-form Chinese article explaining how the workflow works. It combines:
+
+- an image-generation hero illustration;
+- SVG architecture and artifact-matrix diagrams;
+- selected PPT preview images from the Sapiens demo;
+- a Remotion storyboard plus a reusable `remotion-workflow-teaser.tsx` draft for turning the workflow into a short explainer video.
+
 ## Demo / Best-practice example
 
 See [`demos/sapiens/`](demos/sapiens/) for a complete best-practice example using a 《人类简史》 NotebookLM notebook as the target output shape. It includes:
