@@ -13,6 +13,7 @@ This repository mirrors the reusable workflow skills used locally for NotebookLM
   - `notebooklm-artifacts-to-drive`
 - `skills/blog-2-notebooklm/` — import blog/article URLs into Google NotebookLM.
 - `skills/upload-books-to-notebooklm/` — batch upload local book files/PDFs to NotebookLM.
+- `skills/epub-2-pdf/` — convert EPUB ebooks to readable PDFs with Calibre/ebook-convert.
 
 ## Safety notes
 

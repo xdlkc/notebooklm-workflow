@@ -1,0 +1,4 @@
+interface:
+  display_name: "EPUB to PDF"
+  short_description: "Convert EPUB books to clean PDFs"
+  default_prompt: "Use $epub-2-pdf to convert this EPUB into a readable PDF with appropriate page size and table of contents."
