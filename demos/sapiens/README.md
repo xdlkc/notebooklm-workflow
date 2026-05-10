@@ -35,6 +35,16 @@ Drive folder with the original full-quality artifact set:
 
 ![Final NotebookLM infographic](drive_outputs/sapiens_infographic_final.png)
 
+## Selected detailed slide previews
+
+These six pages are extracted from the compressed detailed deck and chosen to show the deck's range: cover, core framework, agriculture argument, universal orders, modernity mechanism, and future-facing ending.
+
+| Cover | Three revolutions | Wheat trap |
+|---|---|---|
+| ![Slide 1 cover](assets/slide-previews/detailed-slide-01-cover.jpg) | ![Slide 3 three revolutions](assets/slide-previews/detailed-slide-03-three-revolutions.jpg) | ![Slide 8 wheat trap](assets/slide-previews/detailed-slide-08-wheat-trap.jpg) |
+| Universal orders | Modern engine | Future DNA |
+| ![Slide 12 universal orders](assets/slide-previews/detailed-slide-12-universal-orders.jpg) | ![Slide 15 modern engine](assets/slide-previews/detailed-slide-15-modern-engine.jpg) | ![Slide 19 future DNA](assets/slide-previews/detailed-slide-19-future-dna.jpg) |
+
 ## Demo screenshots / mock previews
 
 These SVGs are illustrative structure previews for README browsing and PR review. They intentionally avoid private NotebookLM data and copyrighted book excerpts.

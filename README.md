@@ -32,6 +32,14 @@ Preview:
 
 ![Sapiens final NotebookLM infographic](demos/sapiens/drive_outputs/sapiens_infographic_final.png)
 
+Selected detailed slide previews:
+
+| Cover | Three revolutions | Wheat trap |
+|---|---|---|
+| ![Slide 1 cover](demos/sapiens/assets/slide-previews/detailed-slide-01-cover.jpg) | ![Slide 3 three revolutions](demos/sapiens/assets/slide-previews/detailed-slide-03-three-revolutions.jpg) | ![Slide 8 wheat trap](demos/sapiens/assets/slide-previews/detailed-slide-08-wheat-trap.jpg) |
+| Universal orders | Modern engine | Future DNA |
+| ![Slide 12 universal orders](demos/sapiens/assets/slide-previews/detailed-slide-12-universal-orders.jpg) | ![Slide 15 modern engine](demos/sapiens/assets/slide-previews/detailed-slide-15-modern-engine.jpg) | ![Slide 19 future DNA](demos/sapiens/assets/slide-previews/detailed-slide-19-future-dna.jpg) |
+
 Full artifact indexes:
 
 - [`demos/sapiens/drive_outputs/README.md`](demos/sapiens/drive_outputs/README.md) — original full-quality Drive artifacts and prompt logs.
