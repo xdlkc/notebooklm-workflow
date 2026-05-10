@@ -1,84 +1,124 @@
-# 一条把书变成 NotebookLM 作品集的自动化流水线
+# 用 Hermes + NotebookLM，把一本书变成一套可分享的知识作品集
 
-> 这篇文章解释 `notebooklm-workflow` 是如何工作的：它不是一个单点脚本，而是一组 Hermes skills 组合成的知识生产流水线。输入可以是一本书、一个 PDF/EPUB、一批 URL 或一个现有 NotebookLM notebook；输出可以是 PPT、学习指南、思维导图、信息图、数据表、测验卡片、音频/视频，以及一个可以放进 GitHub README 的 demo。
+这篇文章面向第一次看到 `notebooklm-workflow` 的用户：你不需要先关心 repo 里放了哪些压缩文件，也不需要先理解每个脚本的实现。你真正关心的是：给它一本书或一组资料，它到底如何工作，能产出什么，哪些步骤是自动化的，哪些地方仍然需要确认。
 
-![NotebookLM workflow factory hero](assets/notebooklm-workflow/workflow-factory-hero.png)
+先说明边界：本文根据本仓库的 `README.md` 和 `skills/` 文档整理，并结合仓库里已经存在的《人类简史》demo 展示效果。没有现场重新跑一遍完整 NotebookLM 生成流程，因此凡是依赖账号状态、NotebookLM 后端、具体 artifact 质量、生成耗时、Drive 权限或 Remotion 渲染结果的地方，都会明确写成“需要现场确认”，不会当作已验证事实。
 
-## 1. 为什么需要 workflow，而不是只让 NotebookLM “生成一下”？
+![用户把一本书交给 workflow，得到一组知识作品](assets/notebooklm-workflow/knowledge-portfolio-hero.png)
 
-NotebookLM 很适合基于来源生成内容，但真实工作里通常会遇到四个问题：
+## 1. 这个 workflow 解决什么问题？
 
-1. 来源准备不稳定：PDF、EPUB、URL、博客、已有书籍文件，各自需要不同处理方式。
-2. 产物类型很多：PPT、报告、mind map、infographic、quiz、flashcards、audio、video 的 prompt 不应该一样。
-3. 生成后还要交付：PPTX/MP4 往往很大，聊天工具可能传不上去，需要 Drive 原件 + repo 压缩预览。
-4. 最终还要可复用：只把文件丢给用户不够，最好留下 prompt、artifact ID、manifest、截图和 QA 记录，让下一本书可以复刻。
+直接把一本书丢给 AI，让它“总结一下”，通常会得到一份还不错但很难复用的摘要。读书分享、课程准备、社群传播或内部培训需要的不只是摘要，而是一组不同形态的材料：
 
-所以这个仓库的核心不是“一个命令生成所有东西”，而是把知识生产拆成几个可审计的阶段。
+- 可以上台讲的 PPT；
+- 可以深读的学习指南；
+- 可以看全局结构的思维导图；
+- 可以传播的中文信息图；
+- 可以二次加工的数据表；
+- 可以检验理解的 quiz 和 flashcards；
+- 可以异步消费的 audio/video overview；
+- 可以复用到下一本书的一组 prompts 和 QA 记录。
 
-![Workflow architecture](assets/notebooklm-workflow/workflow-architecture.svg)
+`notebooklm-workflow` 的目标，就是把这些材料从一次性的“生成结果”，变成一条可重复运行的知识生产流水线。
 
-## 2. Skills 的分工：每个 skill 只负责流水线的一层
+![NotebookLM artifact gallery](assets/notebooklm-workflow/artifact-gallery.png)
 
-`notebooklm-workflow` 里的 skills 可以理解为六层：
+## 2. 它不是一个大脚本，而是一组 skills 的接力
 
-| 层级 | 代表 skills | 解决的问题 |
+这个仓库里有 9 个 skill。它们不是并列的命令集合，而是按工作流分层：
+
+| 阶段 | 已确认的 skill / 目录 | 它负责什么 |
 |---|---|---|
-| 来源获取与准备 | `zlibrary-cli`、`epub-2-pdf`、`upload-books-to-notebooklm`、`blog-2-notebooklm` | 把合法来源变成 NotebookLM 可摄取的文件或 URL。 |
-| Notebook 操作 | `notebooklm` | 创建 notebook、上传来源、等待 source ready、生成和下载 artifacts。 |
-| 读书分享 PPT 工作流 | `notebooklm-book-ppt-workflow` | 从书中提取结构、观点、案例、时间线、概念、引语，并在生成 PPT 前做事实检查。 |
-| Studio 产物质量 | `notebooklm-studio-quality-prompts` | 为 PPT、报告、信息图、quiz、音视频等分别设计高质量 prompt。 |
-| 富信息量幻灯片 | `notebooklm-rich-slide-decks` + PowerPoint tooling | 避免稀疏卡片式 PPT，压缩图片型 PPTX，抽取预览页，做视觉 QA。 |
-| 交付与展示 | `notebooklm-artifacts-to-drive` | 原始大文件进 Google Drive；repo 里只放 prompt logs、manifest、压缩版和截图。 |
+| 来源准备 | `zlibrary-cli`、`epub-2-pdf`、`upload-books-to-notebooklm`、`blog-2-notebooklm` | 准备合法来源，把 EPUB/PDF/URL/博客文章变成 NotebookLM 可摄取的来源。 |
+| Notebook 操作 | `notebooklm` | 认证、创建/列出 notebook、添加来源、等待 indexing、生成 Studio artifacts、下载产物、查看 artifact 状态。 |
+| 读书分享 PPT | `notebooklm-book-ppt-workflow` | 在生成 PPT 前，先从 NotebookLM 来源中抽取结构、观点、案例、时间线、人物、概念、引语和误读风险，并做 fact check。 |
+| Studio 产物质量 | `notebooklm-studio-quality-prompts` | 为 slide deck、report、mind map、infographic、data table、quiz、flashcards、audio、video 分别准备高质量 prompt。 |
+| 富信息量幻灯片 | `notebooklm-rich-slide-decks` + PowerPoint tooling | 关注 PPT 信息密度、PPTX 校验、视觉 QA、预览页抽取等。 |
+| 交付与展示 | `notebooklm-artifacts-to-drive` | 把原始产物放到 Google Drive；在需要 repo/demo 展示时，再生成 manifest、预览图和轻量副本。 |
 
-这种设计的好处是：每个 skill 都很窄，但组合起来能覆盖完整项目生命周期。用户说“做一套读书分享 PPT”，Agent 会加载 book-PPT workflow；用户说“把产物放上来”，Agent 会切到 artifacts-to-drive 的 repo-friendly 流程。
+关键点是：Agent 不是从头“猜”流程，而是根据用户请求加载对应 skill。例如：
 
-## 3. 一次完整运行发生了什么？
+- “把这本书做成 NotebookLM 笔记本”会走 `upload-books-to-notebooklm` + `notebooklm`；
+- “把 EPUB 先变 PDF 再上传”会走 `epub-2-pdf` -> `upload-books-to-notebooklm` -> `notebooklm`；
+- “做一套读书分享 PPT”会走 `notebooklm-book-ppt-workflow`；
+- “生成所有 Studio 产物”会走 `notebooklm-studio-quality-prompts` + `notebooklm generate ...`；
+- “把产物整理成 demo”才会走 `notebooklm-artifacts-to-drive` 的 repo-friendly 展示流程。
 
-一次端到端运行通常是这样的：
+![已确认 workflow map](assets/notebooklm-workflow/confirmed-workflow-map.svg)
 
-```text
-Prepare source
-  -> optional: zlib search/download, EPUB->PDF conversion, PDF verification
-Create/reuse NotebookLM notebook
-  -> add source(s), wait until ready
-Plan prompts
-  -> artifact-specific prompts for PPT/report/map/infographic/table/quiz/flashcards/audio/video
-Generate artifacts
-  -> save generation JSON/logs and artifact IDs
-Download completed artifacts
-  -> PPTX/PDF/PNG/CSV/MD/JSON/MP4/MP3 as available
-QA and package
-  -> source-grounding check, PPTX archive check, visual/text checks, file-size check
-Deliver
-  -> original full-quality files to Drive; compressed copies/previews to repo when needed
-Document
-  -> README/demo manifest with links, prompts, screenshots, and reproduction notes
+## 3. 一次完整运行，实际发生什么？
+
+根据仓库 README 和 skills，一次完整运行可以拆成 7 步。
+
+### 第一步：确认来源
+
+用户先提供或指定合法来源：PDF、EPUB、URL、博客文章，或已经存在的 NotebookLM notebook。
+
+可选工具包括：
+
+- `epub-2-pdf`：把 EPUB 转成更适合上传和阅读的 PDF；
+- `upload-books-to-notebooklm`：批量上传本地书籍文件；
+- `blog-2-notebooklm`：把官方博客/文章 URL 导入 NotebookLM；
+- `zlibrary-cli`：只在用户授权且合规的前提下使用，且本仓库明确不做自动绕过限额的账号轮换。
+
+需要确认的地方：来源文件是否可用、是否有合法使用权、是否能被 NotebookLM 成功索引。这些不能靠文章保证，必须现场检查。
+
+### 第二步：创建或复用 NotebookLM notebook
+
+`notebooklm` skill 提供的是核心 NotebookLM CLI/API 操作。典型动作是：
+
+```bash
+notebooklm list --json
+notebooklm create "<notebook title>" --json
+notebooklm source add ./book.pdf -n <full-notebook-uuid> --json
+notebooklm source list --json
 ```
 
-这条链路的关键是“状态可恢复”。例如视频生成很慢，就不要让主会话一直等；记录 artifact ID 和 prompt log 后，后续可以继续查状态、下载、上传、压缩。
+确认来源进入 notebook 后，还要等它变成 `ready`。如果 source 还在 `processing` 或 `error`，后续生成就不可靠。
 
-## 4. 为什么同一本书要生成这么多产物？
+需要确认的地方：NotebookLM 登录状态、账号地区/网络是否可用、source 是否 ready、notebook UUID 是否完整。
 
-同一个 NotebookLM notebook 是知识源；不同 artifact 是不同使用场景的入口。
+### 第三步：按产物类型规划 prompt
+
+这是 workflow 和“随手点生成”的核心差异。
+
+`notebooklm-studio-quality-prompts` 明确要求：不同 artifact 不能用同一套默认 prompt。PPT、学习指南、信息图、quiz、flashcards、audio、video 的目标不同，prompt 也应该不同。
+
+例如：
+
+- PPT 要求高信息密度、页数、每页信息块、具体案例和视觉结构；
+- Study guide 要求核心框架、概念解释、误区、练习清单；
+- Infographic 要求短中文文本、视觉隐喻、分区和中文渲染 QA；
+- Quiz 要求检验理解，而不是背概念；
+- Video 要求分镜，而不是百科式旁白。
 
 ![Artifact matrix](assets/notebooklm-workflow/artifact-matrix.svg)
 
-- PPT 适合讲解和读书分享。
-- Study guide 适合深读和文章再加工。
-- Mind map 适合看全局结构。
-- Infographic 适合传播和 README 首屏展示。
-- Data table 适合结构化复用。
-- Quiz / flashcards 适合学习和互动。
-- Audio / video 适合异步消费。
-- Manifest 则把所有产物、prompt 和原始链接串起来。
+### 第四步：生成 Studio artifacts
 
-这也是为什么 demo 里既有 Drive 原件，也有 GitHub 压缩预览：Drive 是交付层，GitHub 是展示层。
+确认来源 ready 后，才启动 NotebookLM Studio 产物生成。skills 中明确列出的 artifact 类型包括：
 
-## 5. 读书分享 PPT：先提取事实，再生成幻灯片
+| Artifact | 典型输出 | 用途 |
+|---|---|---|
+| Slide deck | PPTX / PDF | 读书分享、课程讲解、会议汇报 |
+| Report / study guide | Markdown | 深读、复盘、文章再加工 |
+| Mind map | JSON | 看全局结构，后续可视化 |
+| Infographic | PNG | 社交传播、README 首屏展示 |
+| Data table | CSV | 结构化检索和二次加工 |
+| Quiz | JSON / Markdown / HTML | 检验理解 |
+| Flashcards | JSON / Markdown / HTML | 主动回忆和复习 |
+| Audio overview | MP3 | 播客式异步消费 |
+| Video overview | MP4 | 视频讲解/白板讲解 |
 
-对书籍类任务，最容易踩坑的是“模型知道这本书，所以顺手补了书外知识”。`notebooklm-book-ppt-workflow` 的约束正好相反：所有章节、案例、人物、年份、引语和结论都必须来自 NotebookLM 的来源提取。
+需要确认的地方：NotebookLM Studio 生成有不稳定因素。skills 明确写到，音频、视频、quiz、flashcards、infographic、slide deck 可能遇到 rate limit 或长时间 pending。不能在没有下载和验证的情况下宣称“已经生成成功”。
 
-它会要求保留一组中间文件：
+### 第五步：对书籍 PPT 做更严格的 source-grounding
+
+如果目标是“读书分享 PPT”，workflow 会比普通 artifact 生成更严格。
+
+`notebooklm-book-ppt-workflow` 的硬规则是：PPT 中的章节、观点、案例、时间线、人物、引语和结论必须来自 NotebookLM 对书籍来源的提取，Agent 不能凭模型记忆补充。
+
+它要求保留一组中间文件：
 
 ```text
 00_source_check.md
@@ -100,13 +140,15 @@ Document
 16_ppt_visual_qa.md
 ```
 
-这组文件看起来繁琐，但它解决了三个问题：
+这不是为了“显得复杂”，而是为了降低三类风险：
 
-1. 可追溯：PPT 里每个重要内容都能回到提取文件。
-2. 可修改：如果用户不满意结构，可以改 outline，而不是重跑全部。
-3. 可复用：下一本书可以沿用同样的工作目录和 QA checklist。
+1. 内容风险：PPT 混入书外知识、模型记忆或假引语；
+2. 结构风险：PPT 看起来漂亮，但没有覆盖书中的核心论证；
+3. 复用风险：下次想改页数、风格或重点时，找不到中间依据。
 
-下面是《人类简史》demo 中抽出的几页 PPT 预览。它们展示了一个理想读书分享 deck 应该覆盖的范围：封面、核心框架、关键论点、综合结构、现代机制和未来收束。
+![Quality gates](assets/notebooklm-workflow/quality-gates.png)
+
+《人类简史》demo 中已经放了几页 PPT 预览，可以作为信息密度和展示风格的参考：
 
 | Cover | Three revolutions | Wheat trap |
 |---|---|---|
@@ -114,45 +156,65 @@ Document
 | Universal orders | Modern engine | Future DNA |
 | ![Slide 12 universal orders](../demos/sapiens/assets/slide-previews/detailed-slide-12-universal-orders.jpg) | ![Slide 15 modern engine](../demos/sapiens/assets/slide-previews/detailed-slide-15-modern-engine.jpg) | ![Slide 19 future DNA](../demos/sapiens/assets/slide-previews/detailed-slide-19-future-dna.jpg) |
 
-## 6. Demo 的目录为什么这样设计？
+这里需要明确：这些预览图证明“本 repo 已有一个 demo 展示目标形态”，但不证明每本书都会自动得到同等质量。新书仍然需要来源检查、prompt 规划、生成和 QA。
 
-一个可复用 demo 需要同时服务三类读者：
+### 第六步：下载并验证产物
 
-- 想看效果的人：直接看 README 图片。
-- 想复现的人：看 prompts 和运行步骤。
-- 想审计的人：看 Drive manifest、prompt logs、压缩策略和 QA checklist。
+workflow 不把“生成请求发出去了”当成完成。真正完成至少需要：
 
-推荐目录是：
+- artifact status 显示完成；
+- 文件能下载；
+- PPTX 能通过 archive 检查，例如 `unzip -t`；
+- PDF 页数能读；
+- MP4 能用 `ffprobe` 读出时长/编码信息；
+- 中文信息图/幻灯片没有明显乱码、错字、截断或小字过多；
+- Markdown/manifest/prompt logs 不含 OAuth token、cookie、session、password 等敏感信息。
+
+这一步也解释了为什么 workflow 里会出现 QA 和 manifest：它们服务的是交付可靠性，而不是给外部读者增加负担。
+
+### 第七步：交付给用户，而不是只留在本地
+
+`notebooklm-artifacts-to-drive` 的默认交付思路是：把 NotebookLM 产物按下面路径放到 Google Drive：
 
 ```text
-demos/<slug>/
-  README.md                         # workflow narrative, screenshots, QA checklist
-  prompts/                          # reusable artifact prompts
-  assets/                           # mockups and README preview images
-  drive_outputs/                    # prompt logs + manifest linking original Drive files
-  compressed_outputs/               # compressed PPTX/PDF/MP4 review copies
+NotebookLM/<notebook name>/<artifact file>
 ```
 
-在《人类简史》demo 里：
+这对用户最重要，因为原始 PPTX、PDF、MP4、PNG 等文件通常应该以可打开、可下载、可分享的方式交付。
 
-- `drive_outputs/` 记录真实 Drive 产物和 prompt logs；
-- `compressed_outputs/` 放压缩后的 PPTX/PDF/MP4，方便 GitHub 浏览；
-- `assets/slide-previews/` 放几页代表性 JPG；
-- `prompts/` 放每种 Studio artifact 的高质量 prompt。
+repo 里的压缩版、截图和 manifest 只是第二层用途：当你想把一次 workflow 变成可展示、可复现的 demo 时，才需要它们。普通用户只需要拿到 Drive 里的最终产物即可。
 
-## 7. 用 Remotion 把 workflow 讲成一个 60 秒视频
+## 4. 用户真正会得到什么？
 
-文章适合解释细节，但 workflow 本身也适合做成动态短片：来源进入流水线，经过技能接力、NotebookLM 生成、QA、Drive/repo 分流，最后变成 demo。
+如果 workflow 完整跑通，用户可以期待得到一套“知识作品集”，而不是一份单独摘要：
+
+| 你要做的事 | 对应产物 | 价值 |
+|---|---|---|
+| 做读书会/分享 | 详细 PPT + PDF | 可直接讲，保留概念、案例和逻辑链。 |
+| 自己深入理解 | Study guide | 有框架、误区、问题和复盘线索。 |
+| 快速看全局 | Mind map | 把章节和概念关系展开。 |
+| 社交传播 | Infographic | 用一张图讲清核心框架。 |
+| 二次创作 | Data table | 把概念、案例、表达和动作结构化。 |
+| 学习检测 | Quiz / flashcards | 检验理解，而不是只看过摘要。 |
+| 异步消费 | Audio / video | 适合通勤、复习或课程预热。 |
+
+![Workflow architecture](assets/notebooklm-workflow/workflow-architecture.svg)
+
+## 5. Remotion 在这里应该怎么用？
+
+目前仓库里加入的是 Remotion storyboard 和一个 `.tsx` 组件草稿，不是已经完整打包、渲染并验证过的视频项目。
+
+它的合理定位是：把这篇文章和 demo 中的静态资产，进一步变成 60 秒工作流讲解视频。
 
 ![Remotion storyboard](assets/notebooklm-workflow/remotion-storyboard.svg)
 
-这个仓库附了一个可改造的 Remotion 组件草稿：
+当前草稿文件在：
 
 ```text
 docs/assets/notebooklm-workflow/remotion-workflow-teaser.tsx
 ```
 
-它把 60 秒视频切成 6 个 Sequence：
+它描述了 6 个片段：
 
 | 时间 | 段落 | 内容 |
 |---|---|---|
@@ -160,52 +222,71 @@ docs/assets/notebooklm-workflow/remotion-workflow-teaser.tsx
 | 06-16s | 技能接力 | source、notebook、prompt、Studio、QA、delivery 分层协作。 |
 | 16-30s | Notebook 核心 | 等待 source ready，围绕同一 notebook 生成多种 artifact。 |
 | 30-42s | 审计与 QA | 保存 prompt log、artifact ID、manifest 和验证记录。 |
-| 42-54s | 交付分流 | 原始大文件进 Drive，repo 只放压缩预览和说明。 |
-| 54-60s | Demo | README 可以直接浏览，Drive 打开原始文件。 |
+| 42-54s | 交付分流 | 原始产物交付到 Drive；demo 展示再整理预览资产。 |
+| 54-60s | Demo | 展示 README、PPT preview 和 artifact gallery。 |
 
-实际落地时，可以把本文的 SVG、hero image、PPT preview images 作为 Remotion 资产，生成一个 60 秒横版视频和一个 15 秒社媒短版。
+需要确认的地方：要真正使用 Remotion，还需要一个 Remotion 项目、依赖安装、入口注册、资产路径调整、渲染命令和视频输出检查。本文只提供分镜和组件草稿，不声称视频已经构建成功。
 
-## 8. 给 Agent 的推荐调用方式
+## 6. 哪些是已确认的，哪些需要现场确认？
 
-你可以直接这样对 Hermes/Codex 说：
+已确认来自仓库文档/文件的部分：
+
+- 仓库包含 9 个 workflow skills；
+- README 已定义 skills 如何协作和典型 routing；
+- `notebooklm` skill 支持 notebook/source/artifact 的 CLI 操作；
+- `notebooklm-studio-quality-prompts` 定义了多种 artifact 的 prompt 约束；
+- `notebooklm-book-ppt-workflow` 定义了读书 PPT 的 00-16 audit trail；
+- `notebooklm-artifacts-to-drive` 定义了 Drive 交付和 demo packaging 流程；
+- 《人类简史》demo 已包含 prompt 文件、真实 infographic、PPT 预览图、Drive manifest 和压缩 viewing copies；
+- 本文新增的 SVG、image-gen 图片和 Remotion 草稿已经放入 `docs/assets/notebooklm-workflow/`。
+
+需要现场确认的部分：
+
+- 用户当前 NotebookLM 登录是否有效；
+- 指定来源能否成功上传并 ready；
+- 某个 artifact 生成是否触发 rate limit；
+- 某次 PPT/infographic/audio/video 的质量是否达标；
+- Google Drive 分享权限是否对目标用户可打开；
+- Remotion 草稿是否已接入真实项目并成功渲染。
+
+这也是 workflow 的设计原则：能自动化的自动化，不能确认的明确暴露出来，不把假设包装成结果。
+
+## 7. 你可以如何让 Agent 跑这条 workflow？
+
+如果你只是想处理一本书，可以这样说：
 
 ```text
-使用 notebooklm-workflow 的 skills，把这本书做成一个 NotebookLM 读书分享 workflow：
-1. 使用我提供的合法 PDF/EPUB 作为来源，不要加入书外知识；
-2. 创建或复用 NotebookLM notebook，等待 source ready；
-3. 生成：详细 PPT、学习指南、思维导图、信息图、数据表、quiz、flashcards、audio/video overview；
-4. 每类 artifact 使用对应的高质量 prompt，保存 prompt log 和 artifact IDs；
-5. 原始大文件上传到 Google Drive 的 NotebookLM/<notebook name>/；
-6. 如果要放进 repo，只提交 prompt logs、manifest、压缩预览版和 README 截图，不提交书籍 PDF、认证信息或大型原始二进制。
+使用 notebooklm-workflow 的 skills，把我提供的合法 PDF/EPUB 做成一套 NotebookLM 知识作品集。
+请先确认来源能被 NotebookLM 成功索引，不要加入书外知识。
+生成：详细读书分享 PPT、学习指南、思维导图、信息图、数据表、quiz、flashcards、audio/video overview。
+每种 artifact 使用对应的高质量 prompt，并记录 prompt、artifact ID、状态和下载结果。
+完成后把原始产物放到 Google Drive 的 NotebookLM/<notebook name>/ 下，并验证分享链接。
+如果某个来源、生成任务、下载、Drive 权限或视觉质量无法确认，请明确列出，不要假装完成。
 ```
 
-如果只想做 PPT，可以更窄：
+如果你只想做高质量 PPT，可以更窄：
 
 ```text
 使用 notebooklm-book-ppt-workflow，基于当前 NotebookLM notebook 做一套中文读书分享 PPT。
-请先从 NotebookLM 来源中提取结构、核心观点、案例、时间线、概念、引语和误读风险，生成 content brief 和 slide outline，完成 fact check 后再生成 PPT。
-不要加入书外知识。最终把原始 PPTX/PDF 上传 Drive，并在 repo demo 中放压缩版和几页 README 预览图。
+请先从 NotebookLM 来源中提取结构、核心观点、案例、时间线、人物、概念、引语、误读风险和读者启发，生成 content brief 和 slide outline。
+完成 fact check 后再生成 PPT。所有内容必须来自 NotebookLM 来源提取，不能凭模型记忆补充。
+最后下载 PPTX/PDF，做内容 QA 和视觉 QA，并把可交付文件上传到 Drive。
 ```
 
-## 9. 这条 workflow 的边界
+## 8. 总结
 
-这条流水线刻意保守：
+`notebooklm-workflow` 的核心价值不是“让 NotebookLM 多生成几个文件”，而是把一本书或一组资料变成一套可讲、可看、可复习、可传播、可二次加工的知识作品集。
 
-- 不把书籍 PDF 或受版权保护的原文提交进 git。
-- 不提交 NotebookLM auth storage、Google OAuth token、cookies、Z-Library session。
-- 不自动绕过 Z-Library 额度或访问控制。
-- 不把大型原始 PPTX/PDF/MP4 塞进 git 历史。
-- 不让 PPT 内容来自模型记忆，而是来自 NotebookLM 的来源提取和 fact check。
+它的工作方式可以概括为：
 
-换句话说，它追求的不是“最快生成一个文件”，而是让生成过程可以复查、可以交付、可以复用。
+```text
+合法来源
+  -> NotebookLM notebook
+  -> artifact-specific prompts
+  -> Studio artifacts
+  -> source-grounded QA
+  -> Drive delivery
+  -> optional demo/showcase packaging
+```
 
-## 10. 最终效果：workflow 变成项目资产
-
-当这套 workflow 跑完后，仓库不只是多了一堆文件，而是多了一个可演示、可复刻的案例：
-
-- README 直接展示 infographic 和 PPT 预览页；
-- demo 目录保存 prompts、压缩产物和 Drive manifest；
-- 原始高质量文件仍在 Drive；
-- 下一次处理另一本书时，可以复用同样的 skill stack 和目录结构。
-
-这就是 `notebooklm-workflow` 的目标：把 NotebookLM 从一个单次生成工具，变成一条可审计、可展示、可复用的知识生产流水线。
+对外部用户来说，最重要的是前六步：从资料到高质量可交付产物。repo 里的截图、压缩版和 manifest 只是当你想展示、复现或维护 demo 时才需要关心的工程层。

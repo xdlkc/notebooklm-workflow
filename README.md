@@ -136,10 +136,10 @@ The repo should contain reproducible instructions and lightweight review artifac
 
 ## Article / visual explainer
 
-See [`docs/notebooklm-workflow-article.md`](docs/notebooklm-workflow-article.md) for a long-form Chinese article explaining how the workflow works. It combines:
+See [`docs/notebooklm-workflow-article.md`](docs/notebooklm-workflow-article.md) for a user-facing Chinese visual explainer: how Hermes + NotebookLM turns a legal book/source pack into a reusable knowledge portfolio. The article separates confirmed repo/skill behavior from items that still require live verification. It combines:
 
-- an image-generation hero illustration;
-- SVG architecture and artifact-matrix diagrams;
+- multiple image-generation illustrations for the user journey, artifact gallery, and QA gates;
+- SVG diagrams for the confirmed workflow, architecture, and artifact matrix;
 - selected PPT preview images from the Sapiens demo;
 - a Remotion storyboard plus a reusable `remotion-workflow-teaser.tsx` draft for turning the workflow into a short explainer video.
 

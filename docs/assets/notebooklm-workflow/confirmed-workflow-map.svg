@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="860" viewBox="0 0 1440 860" role="img" aria-label="Confirmed workflow map">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#082f49"/></linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#38bdf8"/></marker>
+    <style>.title{font:800 36px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#fff}.sub{font:400 17px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#bae6fd}.h{font:800 18px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#fff}.p{font:400 13px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#dbeafe}.box{rx:20;stroke-width:2}.cmd{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#bae6fd}.arrow{stroke:#38bdf8;stroke-width:3;fill:none;marker-end:url(#arr)}.note{font:400 12px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#fef3c7}</style>
+  </defs>
+  <rect width="1440" height="860" fill="url(#bg)"/>
+  <text x="70" y="70" class="title">已确认的 workflow 工作方式</text>
+  <text x="70" y="106" class="sub">基于本仓库 README 与 skills 文档整理：每一段都有对应 skill/命令，不把未验证能力写成事实。</text>
+  <g transform="translate(70 165)"><rect width="210" height="170" fill="rgba(245,158,11,.14)" stroke="#f59e0b" class="box"/><text x="25" y="42" class="h">1. 准备来源</text><text x="25" y="74" class="p">用户提供合法 PDF/EPUB/URL，或使用授权来源工具准备。</text><text x="25" y="116" class="cmd">zlibrary-cli</text><text x="25" y="138" class="cmd">epub-2-pdf</text></g>
+  <g transform="translate(335 165)"><rect width="210" height="170" fill="rgba(34,211,238,.14)" stroke="#22d3ee" class="box"/><text x="25" y="42" class="h">2. 建 Notebook</text><text x="25" y="74" class="p">创建/复用 NotebookLM notebook，上传来源并等待 ready。</text><text x="25" y="116" class="cmd">notebooklm source add</text><text x="25" y="138" class="cmd">source wait/list</text></g>
+  <g transform="translate(600 165)"><rect width="210" height="170" fill="rgba(167,139,250,.16)" stroke="#a78bfa" class="box"/><text x="25" y="42" class="h">3. 规划提示词</text><text x="25" y="74" class="p">不同产物使用不同 prompt，避免默认摘要太泛。</text><text x="25" y="116" class="cmd">studio-quality-prompts</text></g>
+  <g transform="translate(865 165)"><rect width="210" height="170" fill="rgba(52,211,153,.14)" stroke="#34d399" class="box"/><text x="25" y="42" class="h">4. 生成产物</text><text x="25" y="74" class="p">PPT、报告、mind map、信息图、表格、quiz、flashcards、音视频。</text><text x="25" y="128" class="cmd">notebooklm generate *</text></g>
+  <g transform="translate(1130 165)"><rect width="210" height="170" fill="rgba(251,113,133,.14)" stroke="#fb7185" class="box"/><text x="25" y="42" class="h">5. 下载/验证</text><text x="25" y="74" class="p">下载可用格式，检查 PPTX、中文图片、MP4、链接和敏感信息。</text><text x="25" y="128" class="cmd">download / QA</text></g>
+  <path class="arrow" d="M280 250 H335"/><path class="arrow" d="M545 250 H600"/><path class="arrow" d="M810 250 H865"/><path class="arrow" d="M1075 250 H1130"/>
+  <g transform="translate(130 435)"><rect width="330" height="150" fill="rgba(15,23,42,.75)" stroke="#475569" class="box"/><text x="24" y="40" class="h">读书 PPT 的额外步骤</text><text x="24" y="74" class="p">先抽取结构、观点、案例、时间线、人物、概念、引语、误读和读者启发。</text><text x="24" y="116" class="cmd">00_source_check → 16_visual_qa</text></g>
+  <g transform="translate(555 435)"><rect width="330" height="150" fill="rgba(15,23,42,.75)" stroke="#475569" class="box"/><text x="24" y="40" class="h">长任务的处理</text><text x="24" y="74" class="p">音频/视频/slide deck 可能较慢，记录 artifact ID 和状态，不假装已经完成。</text><text x="24" y="116" class="cmd">artifact list / wait</text></g>
+  <g transform="translate(980 435)"><rect width="330" height="150" fill="rgba(15,23,42,.75)" stroke="#475569" class="box"/><text x="24" y="40" class="h">交付层</text><text x="24" y="74" class="p">Drive 用于原始交付；repo demo 只是在需要展示/复现时使用。</text><text x="24" y="116" class="cmd">gws + manifest</text></g>
+  <path class="arrow" d="M295 335 C295 380 295 405 295 435"/><path class="arrow" d="M700 335 C700 380 700 405 720 435"/><path class="arrow" d="M1235 335 C1235 380 1235 405 1145 435"/>
+  <rect x="70" y="675" width="1280" height="92" rx="22" fill="rgba(234,179,8,.12)" stroke="#eab308"/>
+  <text x="100" y="713" class="h">未确认就不写成事实</text>
+  <text x="100" y="744" class="note">具体耗时、某次 Studio 输出质量、账号限额、Drive 权限、Remotion 是否已经渲染成视频，都要现场验证；本文只把仓库文档和已存在 demo 能证明的部分写成确定描述。</text>
+</svg>
