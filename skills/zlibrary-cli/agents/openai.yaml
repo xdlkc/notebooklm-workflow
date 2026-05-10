@@ -1,0 +1,4 @@
+interface:
+  display_name: "Z-Library CLI"
+  short_description: "Use heartleo/zlib for Z-Library CLI workflows"
+  default_prompt: "Use $zlibrary-cli to install, configure, log in, search, and troubleshoot heartleo/zlib."
