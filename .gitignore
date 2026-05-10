@@ -1,0 +1,31 @@
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets/auth artifacts
+.env
+*.env
+.env.*
+*.token
+*.secret
+*storage_state*.json
+*cookies*.json
+credentials.json
+token.json
+client_secret*.json
+
+# Generated local outputs
+out/
+outputs/
+artifacts/
+*.pptx
+*.pdf
+*.mp3
+*.mp4

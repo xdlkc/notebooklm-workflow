@@ -1,0 +1,4 @@
+interface:
+  display_name: "Upload Books to NotebookLM"
+  short_description: "Batch books into NotebookLM notebooks"
+  default_prompt: "Use $upload-books-to-notebooklm to upload the books in this folder to NotebookLM, grouping series into one 《书名》 notebook."

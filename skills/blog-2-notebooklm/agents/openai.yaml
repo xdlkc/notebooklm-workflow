@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blog to NotebookLM"
+  short_description: "Import blog URLs into NotebookLM"
+  default_prompt: "Use $blog-2-notebooklm to import all official blog URLs from a site into NotebookLM as separate sources."
