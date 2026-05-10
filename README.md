@@ -16,6 +16,21 @@ This repository mirrors the reusable workflow skills used locally for NotebookLM
 - `skills/epub-2-pdf/` — convert EPUB ebooks to readable PDFs with Calibre/ebook-convert.
 - `skills/zlibrary-cli/` — use and troubleshoot the `heartleo/zlib` Z-Library CLI, including login/session handling, search/download commands, and a non-interactive download helper.
 
+## Demo / Best-practice example
+
+See [`demos/sapiens/`](demos/sapiens/) for a complete best-practice example using a 《人类简史》 NotebookLM notebook as the target output shape. It includes:
+
+- a reproducible NotebookLM CLI workflow for creating a book notebook and generating Studio artifacts;
+- prompt files for slide deck, study guide/report, mind map, infographic, data table, quiz, flashcards, audio, and video;
+- lightweight SVG mock screenshots showing the desired artifact gallery, dense slide style, and Chinese infographic quality target;
+- a QA checklist for source grounding, Chinese visual text, PPTX validation, and long-running artifact handoff.
+
+Preview:
+
+![Sapiens NotebookLM artifact gallery mockup](demos/sapiens/assets/artifacts-gallery.svg)
+
+> The demo does not commit the book PDF, private NotebookLM outputs, or copyrighted excerpts. Use your own legally available source inside NotebookLM.
+
 ## Installing these skills into Hermes
 
 Install the complete skill directories so supporting `references/`, `scripts/`, `templates/`, and `assets/` files are preserved. From a clone of this repository:
