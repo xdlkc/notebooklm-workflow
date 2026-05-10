@@ -17,6 +17,8 @@ Use this skill for the `heartleo/zlib` CLI, whose executable is `zlib`. Keep cop
 - Onion domain in source: `http://bookszlibb74ugqojhzhg2a63w5i2atv5bqarulgczawnbmsb6s6qead.onion`
 - Login endpoint is `<domain>/rpc.php`
 - Session file: `~/.config/zlib/session.json`
+- Named account/session copies managed by this skill: `~/.config/zlib/accounts/<name>.json`
+- Active account marker managed by this skill: `~/.config/zlib/active_account`
 - Working-directory `.env` variables are loaded before command execution.
 
 ## Verify/install
@@ -75,6 +77,50 @@ Implementation details to remember when troubleshooting:
 5. Later commands load the saved cookies and add them to requests.
 
 The tool does not solve CAPTCHA, Cloudflare/browser JS challenges, 2FA, or other human-verification flows. If login fails because of these, advise browser/manual resolution or wait/use an authorized accessible domain; do not provide bypass instructions.
+
+## Explicit multi-account session management
+
+Upstream `zlib` does not have a native account pool or `--session` flag. It reads and writes one active session file at `~/.config/zlib/session.json`. This skill includes `scripts/zlib_account.py` to manage named copies of that session file and switch between them explicitly.
+
+Compliance boundary: use this helper for legitimate account separation and manual switching only. Do not build or run automatic quota-circumvention logic such as "when one account's limit is exhausted, automatically rotate to the next account and continue downloading." If `zlib profile` shows no remaining quota, stop and ask the user to wait for reset or explicitly choose another account they are authorized to use.
+
+Recommended workflow:
+
+```bash
+# 1. Log in with zlib normally, then save that active session under a name.
+zlib login
+python3 skills/zlibrary-cli/scripts/zlib_account.py save personal
+
+# 2. Repeat after logging in with another authorized account.
+zlib login
+python3 skills/zlibrary-cli/scripts/zlib_account.py save research
+
+# 3. List and switch explicitly.
+python3 skills/zlibrary-cli/scripts/zlib_account.py list
+python3 skills/zlibrary-cli/scripts/zlib_account.py use personal
+python3 skills/zlibrary-cli/scripts/zlib_account.py profile
+```
+
+If the skill is installed into Hermes rather than run from this repository, set `ZLIB_SKILL_DIR` or call the installed script path directly:
+
+```bash
+ZLIB_SKILL_DIR=${ZLIB_SKILL_DIR:-"$HOME/.hermes/skills/zlibrary-cli"}
+python3 "$ZLIB_SKILL_DIR/scripts/zlib_account.py" list
+python3 "$ZLIB_SKILL_DIR/scripts/zlib_account.py" use personal
+```
+
+Supported helper commands:
+
+```bash
+python3 scripts/zlib_account.py list
+python3 scripts/zlib_account.py save NAME [--overwrite]
+python3 scripts/zlib_account.py use NAME
+python3 scripts/zlib_account.py current
+python3 scripts/zlib_account.py profile
+python3 scripts/zlib_account.py remove NAME
+```
+
+The helper stores only copies of `session.json`; it never prints cookie values or passwords. Keep `~/.config/zlib/accounts/` private and never commit it.
 
 ## Common commands
 

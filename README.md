@@ -130,8 +130,9 @@ Needed only by `skills/zlibrary-cli/`.
 
 | Tool | Purpose | Install / setup | Verify |
 |---|---|---|---|
-| `zlib` | Search/download authorized Z-Library books and manage `~/.config/zlib/session.json`. | `brew install heartleo/tap/zlib`; then run `zlib login`. | `zlib profile` |
+| `zlib` | Search/download authorized Z-Library books and manage the active `~/.config/zlib/session.json`. | `brew install heartleo/tap/zlib`; then run `zlib login`. | `zlib profile` |
 | Go 1.25+ | Run `zlibrary-cli/scripts/noninteractive_download.go`, the non-interactive fallback when `zlib download` fails in non-TTY agent sessions. | `brew install go`, or let `go run` download the requested toolchain if supported. | `go version` |
+| `skills/zlibrary-cli/scripts/zlib_account.py` | Optional helper for explicit multi-account session switching. Stores named session copies under `~/.config/zlib/accounts/`; it does not auto-rotate accounts to bypass quotas. | Included in this repository. Use after `zlib login`. | `python3 skills/zlibrary-cli/scripts/zlib_account.py list` |
 
 Optional Z-Library environment variables:
 
