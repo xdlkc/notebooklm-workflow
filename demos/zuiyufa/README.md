@@ -4,13 +4,12 @@
 
 ## 目录结构
 
-- `source/`：本次实测使用的 EPUB 和转换后的 PDF source 不提交到公开仓库；文章只保留 NotebookLM/Drive 产物与验证记录，避免把资料来源合规问题变成主题。
+- `source/`：本次实测使用的 EPUB 和转换后的 PDF source 不提交到公开仓库；文章只保留 NotebookLM/Drive 产物，避免把资料来源合规问题变成主题。
 - `prompts/`：PPT、信息图、视频及信息图 retry/final 版本的 NotebookLM Studio prompts。
 - `drive_outputs/`：最终通过 QA 并上传 Google Drive 的产物，包含 PPTX、PDF、PNG、MP4。
 - `review_outputs/`：QA 未通过但用于文章说明“质量闸门”的信息图初版和 retry 版。
 - `ppt_previews/`：PPT contact sheet 和从 PPTX 提取的 20 张 slide 预览图。
-- `metadata/`：Notebook/source/artifact 状态、manifest、validation summary、checksums 等。
-- `logs/`：生成、下载、上传、timeout/retry 相关日志和状态文件。
+- `notebooklm_answers/`：Hermes Agent 围绕《罪与罚》向 NotebookLM 发起的结构化问答摘录。
 
 ## Google Drive 交付目录
 
@@ -24,8 +23,6 @@ https://drive.google.com/drive/folders/1KgS1J-hNcQxYbzd9Ftx5chsRCWVQ0f4R
 - PPT PDF：`drive_outputs/crime_and_punishment_slide_deck.pdf`
 - 最终信息图：`drive_outputs/crime_and_punishment_infographic_final_minimal.png`
 - 视频：`drive_outputs/crime_and_punishment_video.mp4`
-- 验证摘要：`metadata/validation_summary.md`
-- 工作流 manifest：`metadata/manifest.json`
 - Demo inventory：`demo_manifest.json`
 
 ## QA 备注

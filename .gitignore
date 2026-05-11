@@ -30,8 +30,10 @@ artifacts/
 *.mp3
 *.mp4
 
-# Do not commit raw book source files for public demos
+# Do not commit raw book source files or local run metadata for public demos
 demos/zuiyufa/source/
+demos/zuiyufa/logs/
+demos/zuiyufa/metadata/
 
 # Curated demo artifacts intentionally committed as compressed viewing copies.
 !demos/sapiens/compressed_outputs/

@@ -1,2 +1,0 @@
-20:36:17 ERROR [notebooklm._core] RPC LIST_ARTIFACTS failed after 10.009s: 
-Error: Connection timed out calling LIST_ARTIFACTS: 
