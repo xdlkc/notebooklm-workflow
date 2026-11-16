@@ -1,182 +1,75 @@
 # NotebookLM Workflow
 
-Collected NotebookLM workflow assets for Hermes/Codex agents.
+English | [简体中文](./README.zh-CN.md)
 
-This repository mirrors the reusable workflow skills used locally for NotebookLM automation and artifact generation.
+Modular Google NotebookLM automation skills, prompt libraries, and reference demos for Hermes/Codex-style AI agents.
 
-## Contents
+## Overview
 
-- `skills/notebooklm/` — core NotebookLM CLI/API skill plus specialized sub-skills:
-  - `notebooklm-book-ppt-workflow`
-  - `notebooklm-rich-slide-decks`
-  - `notebooklm-studio-quality-prompts`
-  - `notebooklm-artifacts-to-drive`
-- `skills/blog-2-notebooklm/` — import blog/article URLs into Google NotebookLM.
-- `skills/upload-books-to-notebooklm/` — batch upload local book files/PDFs to NotebookLM.
-- `skills/epub-2-pdf/` — convert EPUB ebooks to readable PDFs with Calibre/ebook-convert.
-- `skills/zlibrary-cli/` — use and troubleshoot the `heartleo/zlib` Z-Library CLI, including login/session handling, search/download commands, and a non-interactive download helper.
+Instead of a single monolithic script, this repository organizes NotebookLM automation as a layered stack of 9 skills (5 top-level skills plus 4 specialized sub-skills under [`skills/notebooklm/`](./skills/notebooklm/SKILL.md)). Agents route requests across source preparation, NotebookLM CLI/API operations, source-grounded book-to-deck extraction, Studio prompt engineering, quality checks, and Google Drive delivery.
 
-## How the skills work together
+## Included Skills
 
-This repository is organized as a small workflow stack, not as one monolithic skill. Hermes/Codex loads the skill that matches the user request, and that skill then tells the agent which helper skills, CLIs, prompts, and safety checks to use.
-
-| Layer | Skill / directory | Role in the workflow |
+| Layer | Skill | Responsibility |
 |---|---|---|
-| Source acquisition | `skills/zlibrary-cli/`, `skills/epub-2-pdf/`, `skills/upload-books-to-notebooklm/`, `skills/blog-2-notebooklm/` | Find or prepare authorized sources, convert EPUB/PDF when needed, and add local files or URLs into NotebookLM. |
-| Notebook operations | `skills/notebooklm/` | The core API/CLI wrapper: authenticate, create/list notebooks, add sources, wait for indexing, generate Studio artifacts, download outputs, and inspect artifact status. |
-| Book-to-PPT workflow | `skills/notebooklm/notebooklm-book-ppt-workflow/` | A source-grounded book-sharing workflow: extract structure, concepts, cases, timelines, quotes, takeaways, fact-check the script, then generate or build a deck. |
-| Studio artifact quality | `skills/notebooklm/notebooklm-studio-quality-prompts/` | Artifact-specific prompts for slide decks, reports, mind maps, infographics, tables, quizzes, flashcards, audio, and video so Studio outputs are not generic. |
-| Rich slide/deck QA | `skills/notebooklm/notebooklm-rich-slide-decks/` plus PowerPoint tooling | Guidance for dense, high-information slide decks, PPTX validation, visual QA, and compressed review copies. |
-| Delivery / showcase | `skills/notebooklm/notebooklm-artifacts-to-drive/` | Upload originals to Google Drive, create share links, keep large originals out of git, and commit repo-friendly previews/manifest files. |
+| Core CLI / API | [`skills/notebooklm/`](./skills/notebooklm/SKILL.md) | Authenticate (`notebooklm-py==0.3.4`), manage profiles, create/list notebooks, upload sources, wait for indexing, generate and download Studio artifacts, and verify auth health. Includes [`SECURITY_AUDIT.md`](./skills/notebooklm/SECURITY_AUDIT.md) and [`import_browser_cookies.py`](./skills/notebooklm/import_browser_cookies.py). |
+| Book-to-PPT Pipeline | [`skills/notebooklm/notebooklm-book-ppt-workflow/`](./skills/notebooklm/notebooklm-book-ppt-workflow/SKILL.md) | Extracts book structure, core ideas, cases, timelines, characters, concepts, quotes, and misreadings strictly from NotebookLM sources, fact-checks the script, and audits the deck before delivery. |
+| Studio Prompts | [`skills/notebooklm/notebooklm-studio-quality-prompts/`](./skills/notebooklm/notebooklm-studio-quality-prompts/SKILL.md) | Artifact-specific prompts for slide decks (concise vs. detailed), study guides, mind maps, infographics, data tables, quizzes, flashcards, audio, and video. |
+| Rich Slide Decks | [`skills/notebooklm/notebooklm-rich-slide-decks/`](./skills/notebooklm/notebooklm-rich-slide-decks/SKILL.md) | Density targets (`10-14` slides concise vs. `18-24` slides detailed), layout variety rules, and `.pptx` archive/visual QA alongside external PowerPoint tooling / `python-pptx`. |
+| Drive Delivery | [`skills/notebooklm/notebooklm-artifacts-to-drive/`](./skills/notebooklm/notebooklm-artifacts-to-drive/SKILL.md) | Uploads full-quality originals to Google Drive under `NotebookLM/<notebook name>/` via `gws`, generates share links, and keeps large binaries out of git. |
+| Blog Import | [`skills/blog-2-notebooklm/`](./skills/blog-2-notebooklm/SKILL.md) | Crawls sitemaps (`collect_sitemap_urls.py`) or topic pages, uploads each article URL as a separate source, splits across continuation notebooks if needed, and prefixes titles with `YYYY-MM-DD`. |
+| Batch Book Upload | [`skills/upload-books-to-notebooklm/`](./skills/upload-books-to-notebooklm/SKILL.md) | Scans local `.pdf`/`.txt`/`.md`/`.docx` files (`upload_books_to_notebooklm.py`), normalizes titles, groups multi-volume series into single notebooks, and verifies `ready` status. |
+| EPUB Conversion | [`skills/epub-2-pdf/`](./skills/epub-2-pdf/SKILL.md) | Builds Calibre `ebook-convert` commands (`build_ebook_convert_cmd.py`) with controllable TOC depth (`source`/`visible`/`detailed`/`medium`/`concise`), A4 layout, page numbers, and CJK serif fonts. |
+| Authorized Book CLI | [`skills/zlibrary-cli/`](./skills/zlibrary-cli/SKILL.md) | Setup and troubleshooting for `heartleo/zlib`, including [`noninteractive_download.go`](./skills/zlibrary-cli/scripts/noninteractive_download.go) for non-TTY agents and explicit session switching via [`zlib_account.py`](./skills/zlibrary-cli/scripts/zlib_account.py). |
 
-Typical routing examples:
+### Typical Routing Chains
 
-- “把这本书做成 NotebookLM 笔记本” -> `upload-books-to-notebooklm` + `notebooklm`.
-- “把 EPUB 先变 PDF 再上传” -> `epub-2-pdf` -> `upload-books-to-notebooklm` -> `notebooklm`.
-- “做一套读书分享 PPT” -> `notebooklm-book-ppt-workflow` -> `notebooklm` -> PowerPoint tooling -> `notebooklm-artifacts-to-drive`.
-- “生成所有 Studio 产物” -> `notebooklm-studio-quality-prompts` -> `notebooklm generate ...` -> `notebooklm-artifacts-to-drive`.
-- “把产物放进 workflow repo 做 demo” -> `notebooklm-artifacts-to-drive` repo-friendly artifact flow: manifest + compressed copies + README preview images.
+- **Local book into NotebookLM**: `upload-books-to-notebooklm` -> `notebooklm`
+- **EPUB to PDF to NotebookLM**: `epub-2-pdf` -> `upload-books-to-notebooklm` -> `notebooklm`
+- **Source-grounded book-sharing deck**: `notebooklm-book-ppt-workflow` -> `notebooklm` -> `notebooklm-rich-slide-decks` -> `notebooklm-artifacts-to-drive`
+- **Full Studio artifact suite**: `notebooklm-studio-quality-prompts` -> `notebooklm` -> `notebooklm-artifacts-to-drive`
+- **Blog/docs site archive**: `blog-2-notebooklm` -> `notebooklm`
 
-## How to run the workflow
+## Prerequisites & Authentication
 
-### 1. Install/update the skills
+Install baseline tooling first, then add only the dependencies required by the workflows you run.
 
-Install this repository's `skills/` directory into Hermes, then start a fresh Hermes session so the skill index is reloaded. See [Installing these skills into Hermes](#installing-these-skills-into-hermes) below.
+### Core Dependencies
 
-### 2. Verify the runtime tools
+| Tool | Required For | Setup |
+|---|---|---|
+| `python3` & `uv` | Helper scripts, validators, and ephemeral Python deps (`pyyaml`, `pypdf`) | macOS/Linux `python3`; `brew install uv` |
+| `rsync` | Installing and syncing skill directories | Preinstalled on macOS/Linux |
+| `notebooklm` (`notebooklm-py`) | All NotebookLM operations (pinned/audited at `0.3.4`; see [`SECURITY_AUDIT.md`](./skills/notebooklm/SECURITY_AUDIT.md)) | `pip install notebooklm-py` |
+| Playwright / Chromium | Google auth capture used by `notebooklm-py` | `python3 -m playwright install chromium` |
+| `gws` | Google Drive upload and share links (`notebooklm-artifacts-to-drive`) | Install Google Workspace CLI, then `gws auth login --services drive` |
 
-At minimum, a NotebookLM workflow usually needs:
+### Optional Workflow Tools
+
+| Tool | Required For | Setup |
+|---|---|---|
+| `python-pptx`, `unzip`, `file` | Building, inspecting, and validating `.pptx` archives | `pip install python-pptx` (plus system `unzip` / `file`) |
+| Calibre (`ebook-convert`) & `pypdf` | `epub-2-pdf` conversion and PDF outline/page verification | Install Calibre (`/Applications/calibre.app/Contents/MacOS/ebook-convert` on macOS); `uv run --with pypdf python ...` |
+| `zlib` & Go 1.25+ | `zlibrary-cli` (only for authorized/owned/public-domain books) | `brew install heartleo/tap/zlib && zlib login`; `brew install go` for non-interactive fallback |
+
+### Authentication & Environment Check
+
+Run only the checks relevant to your workflow:
 
 ```bash
-export NOTEBOOKLM_HOME="$HOME/.notebooklm/profiles/default"
+export NOTEBOOKLM_HOME="$HOME/.notebooklm/profiles/default"  # adjust to your profile root if needed
+notebooklm auth check --test
 notebooklm list --json
-gws auth status
+gws auth status                                              # required for Drive delivery
 ```
 
-Optional source-prep workflows may also need:
+> **Note**: Never commit `storage_state.json`, browser cookies, OAuth tokens, Z-Library sessions, private source books, or full-quality large binaries. Use `zlibrary-cli` only for public-domain, open-license, owned, or otherwise authorized books—never to bypass CAPTCHAs, quotas, or access controls.
 
-```bash
-zlib profile                                   # only for authorized Z-Library use
-/Applications/calibre.app/Contents/MacOS/ebook-convert --version 2>/dev/null || ebook-convert --version
-```
+## Quick Start & Workflows
 
-### 3. Give the agent a workflow-level request
+### 1. Install Skills into Hermes
 
-Use a prompt that names the goal, the source, the artifact types, and delivery expectations. Example:
-
-```text
-使用 notebooklm-workflow 的 skills，把这本书做成一个 NotebookLM 读书分享 workflow：
-1. 使用我提供的合法 PDF/EPUB 作为来源，不要加入书外知识；
-2. 创建或复用 NotebookLM notebook，等待 source ready；
-3. 生成：详细 PPT、学习指南、思维导图、信息图、数据表、quiz、flashcards、audio/video overview；
-4. 每类 artifact 使用对应的高质量 prompt，保存 prompt log 和 artifact IDs；
-5. 原始大文件上传到 Google Drive 的 NotebookLM/<notebook name>/；
-6. 如果要放进 repo，只提交 prompt logs、manifest、压缩预览版和 README 截图，不提交书籍 PDF、认证信息或大型原始二进制。
-```
-
-### 4. What the agent should do internally
-
-A complete run normally follows this sequence:
-
-```text
-Prepare source
-  -> optional: zlib search/download, EPUB->PDF conversion, PDF verification
-Create/reuse NotebookLM notebook
-  -> add source(s), wait until ready
-Plan prompts
-  -> artifact-specific prompts for PPT/report/map/infographic/table/quiz/flashcards/audio/video
-Generate artifacts
-  -> save generation JSON/logs and artifact IDs
-Download completed artifacts
-  -> PPTX/PDF/PNG/CSV/MD/JSON/MP4/MP3 as available
-QA and package
-  -> source-grounding check, PPTX archive check, visual/text checks, file-size check
-Deliver
-  -> original full-quality files to Drive; compressed copies/previews to repo when needed
-Document
-  -> README/demo manifest with links, prompts, screenshots, and reproduction notes
-```
-
-For book-sharing PPTs, `notebooklm-book-ppt-workflow` adds an audit trail before deck generation:
-
-```text
-00_source_check.md
-01_book_structure.md
-02_core_ideas.md
-03_key_cases.md
-04_timeline.md
-05_people.md
-06_concepts.md
-07_quotes.md
-08_misreadings.md
-09_reader_takeaways.md
-10_content_brief.md
-11_slide_outline.md
-12_slide_script.md
-13_fact_check.md
-14_slide_script_verified.md
-15_ppt_content_qa.md
-16_ppt_visual_qa.md
-```
-
-### 5. Output layout for reusable demos
-
-Use the 《人类简史》 demo as the reference shape:
-
-```text
-demos/<slug>/
-  README.md                         # workflow narrative, screenshots, QA checklist
-  prompts/                          # reusable artifact prompts
-  assets/                           # mockups and README preview images
-  drive_outputs/                    # prompt logs + manifest linking original Drive files
-  compressed_outputs/               # compressed PPTX/PDF/MP4 review copies
-```
-
-The repo should contain reproducible instructions and lightweight review artifacts. Original source books, private auth state, browser cookies, OAuth tokens, Z-Library sessions, and full-quality large binaries should stay outside git.
-
-## Article / visual explainer
-
-See [`docs/notebooklm-workflow-article.md`](docs/notebooklm-workflow-article.md) for a user-facing Chinese visual explainer: how Hermes + NotebookLM turns a legal book/source pack into a reusable knowledge portfolio. The article separates confirmed repo/skill behavior from items that still require live verification. It combines:
-
-- multiple image-generation illustrations for the user journey, artifact gallery, and QA gates;
-- SVG diagrams for the confirmed workflow, architecture, and artifact matrix;
-- selected PPT preview images from the Sapiens demo;
-- a Remotion storyboard plus a reusable `remotion-workflow-teaser.tsx` draft for turning the workflow into a short explainer video.
-
-## Demo / Best-practice example
-
-See [`demos/sapiens/`](demos/sapiens/) for a complete best-practice example using a 《人类简史》 NotebookLM notebook as the target output shape. It includes:
-
-- a reproducible NotebookLM CLI workflow for creating a book notebook and generating Studio artifacts;
-- prompt files for slide deck, study guide/report, mind map, infographic, data table, quiz, flashcards, audio, and video;
-- real Drive-delivered prompt logs plus a final infographic PNG committed under `demos/sapiens/drive_outputs/`;
-- compressed PPTX/PDF/MP4 viewing copies committed under `demos/sapiens/compressed_outputs/`;
-- a Drive artifact manifest linking to the original full-quality PPTX/PDF/MP4 outputs;
-- lightweight SVG mock screenshots showing the desired artifact gallery, dense slide style, and Chinese infographic quality target;
-- a QA checklist for source grounding, Chinese visual text, PPTX validation, and long-running artifact handoff.
-
-Preview:
-
-![Sapiens final NotebookLM infographic](demos/sapiens/drive_outputs/sapiens_infographic_final.png)
-
-Selected detailed slide previews:
-
-| Cover | Three revolutions | Wheat trap |
-|---|---|---|
-| ![Slide 1 cover](demos/sapiens/assets/slide-previews/detailed-slide-01-cover.jpg) | ![Slide 3 three revolutions](demos/sapiens/assets/slide-previews/detailed-slide-03-three-revolutions.jpg) | ![Slide 8 wheat trap](demos/sapiens/assets/slide-previews/detailed-slide-08-wheat-trap.jpg) |
-| Universal orders | Modern engine | Future DNA |
-| ![Slide 12 universal orders](demos/sapiens/assets/slide-previews/detailed-slide-12-universal-orders.jpg) | ![Slide 15 modern engine](demos/sapiens/assets/slide-previews/detailed-slide-15-modern-engine.jpg) | ![Slide 19 future DNA](demos/sapiens/assets/slide-previews/detailed-slide-19-future-dna.jpg) |
-
-Full artifact indexes:
-
-- [`demos/sapiens/drive_outputs/README.md`](demos/sapiens/drive_outputs/README.md) — original full-quality Drive artifacts and prompt logs.
-- [`demos/sapiens/compressed_outputs/README.md`](demos/sapiens/compressed_outputs/README.md) — compressed PPTX/PDF/MP4 viewing copies committed to git.
-
-> The demo does not commit the book PDF, private auth data, or original full-quality video/PPT binaries. Use your own legally available source inside NotebookLM.
-
-## Installing these skills into Hermes
-
-Install the complete skill directories so supporting `references/`, `scripts/`, `templates/`, and `assets/` files are preserved. From a clone of this repository:
+Copy the complete `skills/` tree (preserving `references/`, `scripts/`, and `agents/`):
 
 ```bash
 git clone https://github.com/xdlkc/notebooklm-workflow.git
@@ -187,152 +80,75 @@ rsync -a --delete \
   "skills/" "$HOME/.hermes/skills/"
 ```
 
-To install into a named Hermes profile, copy into that profile's skills directory instead of the default `~/.hermes/skills` path, for example:
+To install into a named Hermes profile instead of the default path, target `"$HOME/.hermes/profiles/<profile>/skills/"`. Start a fresh Hermes session afterward so the skill index reloads.
 
-```bash
-PROFILE_SKILLS="$HOME/.hermes/profiles/notebooklm/skills"
-mkdir -p "$PROFILE_SKILLS"
-rsync -a --delete \
-  --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
-  "skills/" "$PROFILE_SKILLS/"
-```
-
-Start a fresh Hermes session after installing or updating skills so the new skill index is loaded.
-
-## Syncing local skills and this repository
-
-Use `rsync --delete` so renames and removed files stay in sync. Review `git diff` before committing and do not sync auth stores, cookies, tokens, generated private artifacts, or cache files.
-
-Local default-profile skills path:
+To sync changes back from your local Hermes skills folder into a clone of this repo:
 
 ```bash
 LOCAL_SKILLS="$HOME/.hermes/skills"
-REPO="$HOME/Code/notebooklm-workflow"
-```
-
-Local skills updated → update the repository copy:
-
-```bash
-rsync -a --delete \
-  --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
-  "$LOCAL_SKILLS/notebooklm/" "$REPO/skills/notebooklm/"
-rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
-  "$LOCAL_SKILLS/blog-2-notebooklm/" "$REPO/skills/blog-2-notebooklm/"
-rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
-  "$LOCAL_SKILLS/upload-books-to-notebooklm/" "$REPO/skills/upload-books-to-notebooklm/"
-rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
-  "$LOCAL_SKILLS/epub-2-pdf/" "$REPO/skills/epub-2-pdf/"
-rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
-  "$LOCAL_SKILLS/zlibrary-cli/" "$REPO/skills/zlibrary-cli/"
-
-cd "$REPO"
+for s in notebooklm blog-2-notebooklm upload-books-to-notebooklm epub-2-pdf zlibrary-cli; do
+  rsync -a --delete --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
+    "$LOCAL_SKILLS/$s/" "skills/$s/"
+done
 git diff --stat
-git diff -- README.md skills/
 ```
 
-Remote/repository updated → update local Hermes skills:
+### 2. End-to-End Execution Pipeline
 
-```bash
-cd "$REPO"
-git pull --ff-only
-rsync -a --delete \
-  --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \
-  "skills/" "$LOCAL_SKILLS/"
-```
+1. **Prepare sources**: Convert EPUBs (`epub-2-pdf`), crawl sitemaps (`blog-2-notebooklm`), or batch-group local PDFs (`upload-books-to-notebooklm`).
+2. **Initialize notebook**: Create or reuse a notebook, upload sources using explicit `-n <notebook-uuid>` flags (safe for parallel agents), and wait until all sources report `ready`.
+3. **Generate Studio artifacts**: Apply tailored prompts from `notebooklm-studio-quality-prompts` for slide decks, study guides, mind maps, infographics, data tables, quizzes, flashcards, audio, and video; save generation JSON and artifact IDs.
+4. **Download & QA**: Check source grounding, PPTX archive integrity (`unzip -t`), visual Chinese text rendering, and video/audio completeness. For book-sharing decks, `notebooklm-book-ppt-workflow` writes a 17-step audit trail (`00_source_check.md` through `16_ppt_visual_qa.md`).
+5. **Deliver**: Upload full-quality originals to Google Drive (`NotebookLM/<notebook name>/`) and commit only prompt logs, manifests, and compressed review previews if publishing a demo.
 
-If you only want one skill, sync that skill directory instead of the whole `skills/` tree.
-
-## Required tools
-
-These skills are written for Hermes/Codex-style agents. Install the common tools first, then add only the workflow-specific tools you actually need.
-
-### Common baseline
-
-| Tool | Required for | Install / setup | Verify |
-|---|---|---|---|
-| `python3` | Helper scripts and validators. | Usually preinstalled on macOS/Linux. | `python3 --version` |
-| `uv` | Optional but recommended for one-off Python deps such as `pyyaml` and `pypdf`. | `brew install uv` or see https://docs.astral.sh/uv/ | `uv --version` |
-| `rsync` | Installing and syncing skill directories. | Usually preinstalled on macOS/Linux. | `rsync --version` |
-
-### NotebookLM workflows
-
-Needed by `skills/notebooklm/`, `skills/blog-2-notebooklm/`, `skills/upload-books-to-notebooklm/`, and the NotebookLM artifact/PPT workflows.
-
-| Tool | Purpose | Install / setup | Verify |
-|---|---|---|---|
-| `notebooklm` | Create/list notebooks, add sources, generate/download NotebookLM artifacts. | `pip install notebooklm-py`; then run `notebooklm login`. | `notebooklm list --json` |
-| Playwright/Chromium | Browser automation and Google auth/session capture used by `notebooklm-py`. | Usually installed by the NotebookLM CLI when needed. If not: `python -m playwright install chromium` in the same Python environment. | `python -m playwright --version` |
-| `gws` | Upload generated artifacts to Google Drive and create share links. Required by `notebooklm-artifacts-to-drive` and Drive delivery fallbacks. | Install/configure the Google Workspace CLI, then run `gws auth login --services drive`. | `gws auth status` |
-| PowerPoint tooling / `python-pptx` | Create, rebuild, or QA dense `.pptx` decks for book-sharing and rich slide workflows. | Use the agent's `powerpoint` skill/tooling; for local Python workflows install `python-pptx` as needed. | `python3 -c "import pptx; print('python-pptx ok')"` |
-| `unzip`, `file` | Inspect PPTX archives and verify output file types. | Usually preinstalled; on macOS available via system tools. | `unzip -v`, `file --version` |
-
-Recommended environment variable for NotebookLM:
-
-```bash
-export NOTEBOOKLM_HOME="$HOME/.notebooklm/profiles/default"
-```
-
-### EPUB/PDF workflows
-
-Needed by `skills/epub-2-pdf/` and PDF/PPT verification steps.
-
-| Tool | Purpose | Install / setup | Verify |
-|---|---|---|---|
-| `ebook-convert` / Calibre | Convert EPUB books to readable PDFs with Chinese fonts, page numbers, and PDF TOC/bookmarks. | Install Calibre. On macOS the binary is usually `/Applications/calibre.app/Contents/MacOS/ebook-convert`. | `/Applications/calibre.app/Contents/MacOS/ebook-convert --version 2>/dev/null || ebook-convert --version` |
-| `pypdf` | Verify PDF page count, outline/bookmarks, and visible TOC pages. | `uv run --with pypdf python ...` or `pip install pypdf`. | `uv run --with pypdf python -c "import pypdf; print('pypdf ok')"` |
-| `unzip`, `file` | Inspect EPUB/PPTX archives and verify output file types. | Usually preinstalled; on macOS available via system tools. | `unzip -v`, `file --version` |
-
-### Z-Library workflows
-
-Needed only by `skills/zlibrary-cli/`.
-
-| Tool | Purpose | Install / setup | Verify |
-|---|---|---|---|
-| `zlib` | Search/download authorized Z-Library books and manage the active `~/.config/zlib/session.json`. | `brew install heartleo/tap/zlib`; then run `zlib login`. | `zlib profile` |
-| Go 1.25+ | Run `zlibrary-cli/scripts/noninteractive_download.go`, the non-interactive fallback when `zlib download` fails in non-TTY agent sessions. | `brew install go`, or let `go run` download the requested toolchain if supported. | `go version` |
-| `skills/zlibrary-cli/scripts/zlib_account.py` | Optional helper for explicit multi-account session switching. Stores named session copies under `~/.config/zlib/accounts/`; it does not auto-rotate accounts to bypass quotas. | Included in this repository. Use after `zlib login`. | `python3 skills/zlibrary-cli/scripts/zlib_account.py list` |
-
-Optional Z-Library environment variables:
-
-```bash
-export ZLIB_DOMAIN="https://z-lib.sk"
-# export ZLIB_PROXY="http://127.0.0.1:7890"
-```
-
-### Quick readiness checks
-
-Run only the checks for workflows you intend to use:
-
-```bash
-python3 --version
-uv --version
-notebooklm list --json                         # NotebookLM workflows
-python -m playwright --version                 # NotebookLM browser/auth workflows
-gws auth status                                # Google Drive delivery
-/Applications/calibre.app/Contents/MacOS/ebook-convert --version 2>/dev/null || ebook-convert --version
-zlib profile                                   # Z-Library workflow
-go version                                     # Z-Library non-interactive fallback
-```
-
-## Safety notes
-
-- Do not commit NotebookLM auth storage, Z-Library sessions, cookies, OAuth tokens, browser profiles, Google Drive credentials, or generated private artifacts.
-- `zlibrary-cli` should only be used for public-domain, open-license, owned, or otherwise authorized books. Do not use these workflows to bypass CAPTCHA, access controls, quotas, or copyright restrictions.
-- Scripts and skills may reference local paths as examples; verify them before running on another machine.
-- Keep generated outputs under a separate work directory unless they are intentionally reusable.
-
-## Quick validation
-
-For Hermes skills, validate individual skill folders with the local skill validator, for example:
-
-```bash
-SKILL_VALIDATOR=${SKILL_VALIDATOR:-$HOME/.hermes/skills/skill-creator/scripts/quick_validate.py}
-python3 "$SKILL_VALIDATOR" skills/notebooklm
-```
-
-If the validator environment lacks PyYAML, run with uv:
+### 3. Validate Skill Definitions
 
 ```bash
 SKILL_VALIDATOR=${SKILL_VALIDATOR:-$HOME/.hermes/skills/skill-creator/scripts/quick_validate.py}
 uv run --with pyyaml python "$SKILL_VALIDATOR" skills/notebooklm
+```
+
+## Demos & Documentation
+
+### Reference Demos
+
+- **Sapiens Demo ([`demos/sapiens/`](./demos/sapiens/README.md))**: Full best-practice package including CLI reproduction steps, 8 prompt templates (`prompts/`), Drive artifact manifest ([`drive_outputs/README.md`](./demos/sapiens/drive_outputs/README.md)), compressed PPTX/PDF/MP4 viewing copies ([`compressed_outputs/README.md`](./demos/sapiens/compressed_outputs/README.md)), and SVG layout references.
+- **Crime and Punishment Demo ([`demos/zuiyufa/`](./demos/zuiyufa/README.md))**: Literary workflow test package with structured NotebookLM Q&A excerpts (`notebooklm_answers/`), passing and failed-QA infographic comparisons (`review_outputs/`), 20-slide PPT previews (`ppt_previews/`), and [`demo_manifest.json`](./demos/zuiyufa/demo_manifest.json).
+
+![Sapiens final NotebookLM infographic](demos/sapiens/drive_outputs/sapiens_infographic_final.png)
+
+| Cover | Three Revolutions | Wheat Trap |
+|---|---|---|
+| ![Slide 1 cover](demos/sapiens/assets/slide-previews/detailed-slide-01-cover.jpg) | ![Slide 3 three revolutions](demos/sapiens/assets/slide-previews/detailed-slide-03-three-revolutions.jpg) | ![Slide 8 wheat trap](demos/sapiens/assets/slide-previews/detailed-slide-08-wheat-trap.jpg) |
+| Universal Orders | Modern Engine | Future DNA |
+| ![Slide 12 universal orders](demos/sapiens/assets/slide-previews/detailed-slide-12-universal-orders.jpg) | ![Slide 15 modern engine](demos/sapiens/assets/slide-previews/detailed-slide-15-modern-engine.jpg) | ![Slide 19 future DNA](demos/sapiens/assets/slide-previews/detailed-slide-19-future-dna.jpg) |
+
+### Architecture & Walkthrough Docs (Chinese)
+
+- [`docs/notebooklm-workflow-article.md`](./docs/notebooklm-workflow-article.md) — Visual walkthrough of the 9-skill pipeline, artifact matrix, and Remotion teaser draft (`docs/assets/notebooklm-workflow/`).
+- [`docs/ai-book-attendant-notebooklm-workflow.md`](./docs/ai-book-attendant-notebooklm-workflow.md) — Field report on building an "AI book attendant" pipeline tested end-to-end on *Crime and Punishment* (`docs/assets/ai-book-attendant/`).
+
+## Repository Layout
+
+```text
+notebooklm-workflow/
+├── README.md
+├── README.zh-CN.md
+├── demos/
+│   ├── sapiens/                         # Reference book workflow demo (prompts, compressed copies, Drive links)
+│   └── zuiyufa/                         # End-to-end QA & manifest demo for Crime and Punishment
+├── docs/
+│   ├── ai-book-attendant-notebooklm-workflow.md
+│   ├── notebooklm-workflow-article.md
+│   └── assets/                          # Diagrams, illustrations, slide previews, Remotion draft
+└── skills/
+    ├── blog-2-notebooklm/               # Sitemap & blog URL importer
+    ├── epub-2-pdf/                      # Calibre EPUB-to-PDF command builder
+    ├── notebooklm/                      # Core NotebookLM skill + SECURITY_AUDIT.md + cookie helper
+    │   ├── notebooklm-artifacts-to-drive/
+    │   ├── notebooklm-book-ppt-workflow/
+    │   ├── notebooklm-rich-slide-decks/
+    │   └── notebooklm-studio-quality-prompts/
+    ├── upload-books-to-notebooklm/      # Batch local book planner & uploader
+    └── zlibrary-cli/                    # heartleo/zlib helper & non-interactive fallback
 ```
